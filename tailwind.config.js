@@ -27,6 +27,15 @@ module.exports = {
           "monospace",
         ],
         script: ["var(--font-script)", "Caveat Brush", "cursive"],
+        sans: [
+          "var(--font-sans)",
+          "-apple-system",
+          "BlinkMacSystemFont",
+          "Segoe UI",
+          "Roboto",
+          "Helvetica Neue",
+          "sans-serif",
+        ],
       },
       letterSpacing: {
         "display-tight": "-0.05em",

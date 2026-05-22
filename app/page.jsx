@@ -90,6 +90,9 @@ const PROJECTS = [
     role: "I own the frontend architecture and several backend modules, working closely on product decisions and implementation flow.",
     decision:
       "Designing the academic backbone in a future-proof way instead of taking shortcuts that would have made timetable, attendance, and subject management harder later.",
+    stakes:
+      "Schools don't get to be down. Academic cycles are calendar-driven. A subtle data-model decision in week two echoes for years.",
+    scope: ["Frontend architecture", "Several backend modules", "Product decisions"],
     stack: ["Next.js", "TypeScript", "PostgreSQL", "REST", "Auth"],
     links: null,
   },
@@ -103,6 +106,9 @@ const PROJECTS = [
     role: "I was the team lead — product direction, frontend implementation, and overall execution.",
     decision:
       "Aggressively limiting scope so the demo felt polished and complete instead of trying to simulate an entire university ecosystem.",
+    stakes:
+      "Forty-eight hours. Three people. A judging panel. Scope wasn't a planning exercise — it was the only variable we could actually control.",
+    scope: ["Team lead", "Frontend", "3D scene", "Product direction"],
     stack: ["Three.js", "Panolens.js", "HTML", "CSS"],
     award: "Best Open Innovation — DUHACKS 2.0",
     links: {
@@ -120,6 +126,9 @@ const PROJECTS = [
     role: "I handle the product architecture, frontend system design, and backend workflow implementation.",
     decision:
       "Prioritizing operational simplicity and maintainability over adding unnecessary complexity too early.",
+    stakes:
+      "Inventory data is operational data. A confusing UI doesn't slow people down — it produces wrong numbers. Reliability beats novelty here.",
+    scope: ["Product architecture", "Frontend", "Backend workflows", "UX"],
     stack: ["Next.js", "PostgreSQL", "Prisma", "REST"],
     links: null,
   },
@@ -133,6 +142,9 @@ const PROJECTS = [
     role: "Solo — exploring how AI can improve execution speed and iteration quality without replacing engineering judgment.",
     decision:
       "Designing workflows that remain reliable and practical instead of becoming over-automated gimmicks.",
+    stakes:
+      "Trust is the bottleneck, not throughput. A pipeline that's slightly wrong fifty percent of the time saves nothing — engineering judgment stays the bar.",
+    scope: ["Workflow design", "Critique loops", "Patch + test", "Diff review"],
     stack: ["OpenAI API", "LangChain", "Python", "Node"],
     links: null,
   },
@@ -175,36 +187,97 @@ const JOURNEY = [
   },
 ];
 
+/* Lab — real repositories + internal experiments.
+   `touched` is a Date.UTC() timestamp; rendered relative via useRelativeTime. */
 const LAB = [
   {
-    title: "AI Engineering Pipeline",
-    body: "Structured AI-assisted implementation workflows for faster feature delivery and engineering iteration cycles.",
+    title: "CShell",
+    body: "Custom Unix shell written in C — process control, pipes, syscalls. Built to understand what bash actually does from the inside.",
     status: "exploring",
-    since: "today",
+    tech: "C",
+    touched: Date.UTC(2026, 2, 5),
+    repo: "https://github.com/sahilsapariya/CShell",
+  },
+  {
+    title: "Account-Verse",
+    body: "Generalised user management in Go — auth flows, session boundaries, role design. Language exploration with a real surface.",
+    status: "exploring",
+    tech: "Go",
+    touched: Date.UTC(2025, 9, 9),
+    repo: "https://github.com/sahilsapariya/Account-Verse",
+  },
+  {
+    title: "AI Engineering Pipeline",
+    body: "Structured AI-assisted implementation workflows. Prompt → critique → patch → test loops for my own development cadence.",
+    status: "exploring",
+    tech: "Python · TypeScript",
+    touched: Date.UTC(2026, 4, 22),
+    repo: null,
   },
   {
     title: "Portfolio Monograph",
-    body: "Rebuilding my portfolio into a cinematic editorial-style engineering experience focused on storytelling and systems thinking.",
+    body: "This site — a cinematic editorial engineering portfolio. Built in public.",
     status: "in use",
-    since: "today",
+    tech: "Next.js · framer-motion",
+    touched: Date.UTC(2026, 4, 22),
+    repo: "https://github.com/sahilsapariya/next-gen-portfolio",
   },
   {
-    title: "ERP Academic System Experiments",
-    body: "Timetable flows, attendance architecture, and scalable academic workflow ideas for the ERP platform.",
-    status: "in use",
-    since: "3 days ago",
-  },
-  {
-    title: "Autonomous Workflow Research",
-    body: "Supervisor-agent style development workflows, implementation orchestration, and AI critique/review loops.",
+    title: "DDU Campus Tour v2",
+    body: "Successor to College360 — three.js rewrite with cleaner scene architecture and better authoring workflow.",
     status: "rebuilding",
-    since: "last week",
+    tech: "TypeScript · Three.js",
+    touched: Date.UTC(2025, 6, 3),
+    repo: "https://github.com/sahilsapariya/ddu-campus-tour",
   },
   {
-    title: "Inventory Architecture Exploration",
-    body: "Practical inventory workflows, schema structures, and operational UX patterns before full implementation.",
-    status: "exploring",
-    since: "5 days ago",
+    title: "8086 Assembly Notes",
+    body: "Assembly experiments from undergrad — low-level instincts, processor mechanics, instructions you mostly forget but the intuition stays.",
+    status: "shelved",
+    tech: "Assembly",
+    touched: Date.UTC(2023, 3, 6),
+    repo: "https://github.com/sahilsapariya/8086-Programming",
+  },
+];
+
+/* Field Notes — production lessons. Real engineering work, abstracted to
+   protect client/internal details. The brief explicitly wants these as
+   notes, not resume bullets. */
+const NOTES = [
+  {
+    n: "01",
+    tag: "ACCESSIBILITY",
+    title: "On building for users who don't see the page.",
+    body: "Worked on an education product where some users were visually impaired. Keyboard navigation, focus rings, screen-reader landmarks, semantic structure — features that should have been there from day one became retrofits. The lesson stayed: accessibility isn't a feature, it's a debugging discipline.",
+    pills: ["WCAG 2.1", "ARIA", "Keyboard nav", "Screen readers"],
+  },
+  {
+    n: "02",
+    tag: "INTEGRATION",
+    title: "On integrating against real APIs.",
+    body: "Integrating Zoom into a booking system. The documentation example fit on one screen — making it survive timezones, recurring sessions, token refresh, and partial failures took weeks. Real integrations are five percent protocol and ninety-five percent edge cases.",
+    pills: ["Zoom API", "OAuth", "Webhooks", "Timezones"],
+  },
+  {
+    n: "03",
+    tag: "CERTIFICATION",
+    title: "On engineering for compliance.",
+    body: "Helping a client product clear a certification audit meant writing not just the code but the trail it leaves — audit logs, role boundaries, data handling, retention policy. Engineering is the part everyone sees. The certification is the part nobody does.",
+    pills: ["Audit logs", "RBAC", "Data handling", "Documentation"],
+  },
+  {
+    n: "04",
+    tag: "PRODUCTION",
+    title: "On debugging things you didn't build.",
+    body: "A deployment that should have been routine wasn't. Half the diagnosis was reading other engineers' notes from eighteen months ago. The other half was learning the system from the way it failed. Production teaches faster than docs — but only if you write the docs as you go.",
+    pills: ["Postmortem", "Logging", "Tracing", "Onboarding"],
+  },
+  {
+    n: "05",
+    tag: "FRONTEND",
+    title: "On the boring half of frontend.",
+    body: "Most of the work on a real product isn't shipping the flashy components. It's making sure the existing ones don't break when the content is in Hindi instead of English, when the browser is Safari, when the network is 3G, or when the device hasn't been updated since 2019. The boring half is most of it.",
+    pills: ["I18n", "Cross-browser", "Performance", "Edge cases"],
   },
 ];
 
@@ -219,6 +292,7 @@ const PHILOSOPHY = [
 const NAV_LINKS = [
   { href: "#work", label: "Work", id: "work" },
   { href: "#systems", label: "Systems", id: "systems" },
+  { href: "#notes", label: "Notes", id: "notes" },
   { href: "#lab", label: "Lab", id: "lab" },
   { href: "#contact", label: "Contact", id: "contact" },
 ];
@@ -248,6 +322,29 @@ function useIsMobile() {
     return () => mq.removeEventListener?.("change", fn);
   }, []);
   return m;
+}
+
+/* Relative time — "today" / "3 days ago" / "last week" / "Nov 2025"
+   Refreshes once per minute (cheap). */
+function useRelativeTime(timestamp) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => {
+    const i = setInterval(() => setNow(Date.now()), 60_000);
+    return () => clearInterval(i);
+  }, []);
+  return useMemo(() => {
+    if (!timestamp) return "";
+    const diff = Math.max(0, now - timestamp);
+    const days = Math.floor(diff / 86_400_000);
+    if (days === 0) return "today";
+    if (days === 1) return "yesterday";
+    if (days < 7) return `${days} days ago`;
+    if (days < 14) return "last week";
+    if (days < 30) return `${Math.floor(days / 7)} weeks ago`;
+    if (days < 365) return `${Math.floor(days / 30)} months ago`;
+    const y = Math.floor(days / 365);
+    return `${y} year${y > 1 ? "s" : ""} ago`;
+  }, [timestamp, now]);
 }
 
 function useLiveTime(tz = "Asia/Kolkata") {
@@ -533,6 +630,7 @@ function Nav({ time }) {
     "focus",
     "work",
     "systems",
+    "notes",
     "journey",
     "lab",
     "philosophy",
@@ -1090,6 +1188,16 @@ function ProjectPanel({ project }) {
               <div className="t-caption mb-4 opacity-55">CONTEXT</div>
               <p className="t-lead">{project.context}</p>
               <p className="mt-6 t-lead italic opacity-80">{project.role}</p>
+              {project.scope && (
+                <div className="mt-8">
+                  <div className="t-caption opacity-45 mb-3">SCOPE</div>
+                  <div className="flex flex-wrap gap-2">
+                    {project.scope.map((s) => (
+                      <span key={s} className="ss-tag">{s}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </motion.div>
 
@@ -1122,9 +1230,9 @@ function ProjectPanel({ project }) {
           {/* Stage 3 — outcome */}
           <motion.div
             style={{ opacity: oOutcome }}
-            className="absolute inset-0 grid grid-cols-12 gap-6"
+            className="absolute inset-0 grid grid-cols-12 gap-6 md:gap-10"
           >
-            <div className="col-span-12 md:col-span-7">
+            <div className="col-span-12 md:col-span-5">
               <div className="t-caption mb-4 opacity-55">STACK</div>
               <div className="flex flex-wrap gap-2">
                 {project.stack.map((s) => (
@@ -1171,6 +1279,30 @@ function ProjectPanel({ project }) {
                 )}
               </div>
             </div>
+
+            {/* Stakes callout — the operational reality */}
+            {project.stakes && (
+              <div
+                className="col-span-12 md:col-span-6 md:col-start-7"
+                style={{ borderLeft: `1px solid ${HAIR_STRONG}`, paddingLeft: 28 }}
+              >
+                <div className="t-caption mb-4" style={{ color: ACCENT }}>
+                  STAKES
+                </div>
+                <p
+                  className="font-serif italic"
+                  style={{
+                    fontSize: "clamp(20px, 1.8vw, 28px)",
+                    lineHeight: 1.4,
+                    letterSpacing: "-0.012em",
+                    fontVariationSettings: "'opsz' 36",
+                    opacity: 0.92,
+                  }}
+                >
+                  {project.stakes}
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
 
@@ -1409,7 +1541,215 @@ function Systems() {
 }
 
 /* ──────────────────────────────────────────────────────────────────────
-   05 · Journey
+   05 · Field Notes — production stories, horizontal scroll
+   ────────────────────────────────────────────────────────────────────── */
+function FieldNotes() {
+  const ref = useRef(null);
+  const isMobile = useIsMobile();
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end end"],
+  });
+  /* Translate the inner track horizontally as we scroll vertically.
+     -68% chosen so the last card's right edge lines up with viewport right. */
+  const x = useTransform(scrollYProgress, [0, 1], ["0%", "-68%"]);
+
+  if (isMobile) {
+    /* Mobile fallback — stack vertically, no horizontal scroll */
+    return (
+      <section
+        className="relative px-5 md:px-10 py-32"
+        style={{ background: BG, color: FG, borderTop: `1px solid ${HAIR}` }}
+      >
+        <SectionLabel index="05" title="Field Notes" count="5 NOTES" />
+        <Reveal delay={0.05}>
+          <h2 className="mt-10 t-section">
+            <span className="block overflow-hidden">Notes from</span>
+            <span
+              className="block overflow-hidden italic"
+              style={{ fontWeight: 400 }}
+            >
+              production
+              <span
+                style={{
+                  color: ACCENT,
+                  fontStyle: "normal",
+                  display: "inline-block",
+                  marginLeft: "0.02em",
+                }}
+              >
+                .
+              </span>
+            </span>
+          </h2>
+        </Reveal>
+        <Reveal delay={0.12}>
+          <p className="mt-6 max-w-xl t-lead italic opacity-70">
+            Real engineering moments, abstracted to protect client and internal details.
+            Lessons production teaches that documentation doesn't.
+          </p>
+        </Reveal>
+        <div className="mt-16 space-y-12">
+          {NOTES.map((n) => (
+            <Reveal key={n.n}>
+              <FieldNoteCard note={n} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section
+      ref={ref}
+      id="notes"
+      className="relative"
+      style={{
+        background: BG,
+        color: FG,
+        height: "420vh",
+        borderTop: `1px solid ${HAIR}`,
+      }}
+    >
+      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+        {/* Header band */}
+        <div className="px-5 md:px-10 pt-24 md:pt-28 pb-6">
+          <SectionLabel index="05" title="Field Notes" count="5 NOTES — SCROLL HORIZONTALLY" />
+          <Reveal delay={0.05}>
+            <h2 className="mt-8 t-section">
+              <span className="block overflow-hidden">Notes from</span>
+              <span
+                className="block overflow-hidden italic"
+                style={{ fontWeight: 400 }}
+              >
+                production
+                <span
+                  style={{
+                    color: ACCENT,
+                    fontStyle: "normal",
+                    display: "inline-block",
+                    marginLeft: "0.02em",
+                  }}
+                >
+                  .
+                </span>
+              </span>
+            </h2>
+          </Reveal>
+        </div>
+
+        {/* Horizontal scroll track */}
+        <div className="relative flex-grow flex items-center px-5 md:px-10">
+          <motion.div
+            style={{ x }}
+            className="flex gap-8 will-change-transform"
+          >
+            {/* Lead-in copy as first "card" so the section opens with a thought */}
+            <div
+              className="shrink-0 flex flex-col justify-end pb-12"
+              style={{ width: "min(420px, 80vw)" }}
+            >
+              <p className="t-lead italic opacity-80">
+                Real engineering moments, abstracted to protect client and internal details.
+              </p>
+              <p className="mt-4 t-caption opacity-50">
+                ← SCROLL ↓ TO ADVANCE →
+              </p>
+            </div>
+            {NOTES.map((n) => (
+              <div key={n.n} className="shrink-0" style={{ width: "min(520px, 86vw)" }}>
+                <FieldNoteCard note={n} />
+              </div>
+            ))}
+            {/* Trailing closer */}
+            <div
+              className="shrink-0 flex flex-col justify-center"
+              style={{ width: "min(360px, 78vw)" }}
+            >
+              <div className="t-caption opacity-50">END OF NOTES</div>
+              <p className="mt-3 font-serif italic" style={{ fontSize: 22, lineHeight: 1.4 }}>
+                More live in commit messages.
+              </p>
+            </div>
+          </motion.div>
+        </div>
+
+        {/* Progress rail */}
+        <div className="px-5 md:px-10 pb-8">
+          <div className="flex items-center gap-3 t-caption">
+            <span className="opacity-55">PROGRESS</span>
+            <div className="flex-grow h-px relative" style={{ background: HAIR }}>
+              <motion.div
+                className="absolute inset-0"
+                style={{ background: ACCENT, transformOrigin: "0 50%", scaleX: scrollYProgress }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FieldNoteCard({ note }) {
+  return (
+    <article
+      className="ss-note-card relative h-full flex flex-col p-7 md:p-9"
+      style={{
+        border: `1px solid ${HAIR_STRONG}`,
+        borderRadius: 2,
+        background: "rgba(234,229,220,0.01)",
+        minHeight: 380,
+      }}
+    >
+      <div className="flex items-baseline justify-between">
+        <div className="t-caption opacity-50 tabular-nums">NOTE {note.n}</div>
+        <div className="t-caption" style={{ color: ACCENT }}>
+          {note.tag}
+        </div>
+      </div>
+      <h3
+        className="mt-7 font-serif italic"
+        style={{
+          fontSize: "clamp(22px, 1.9vw, 32px)",
+          lineHeight: 1.25,
+          letterSpacing: "-0.02em",
+          fontVariationSettings: "'opsz' 72",
+        }}
+      >
+        {note.title}
+      </h3>
+      <p
+        className="mt-5 t-sans flex-grow"
+        style={{
+          color: "rgba(234,229,220,0.85)",
+        }}
+      >
+        {note.body}
+      </p>
+      <div className="mt-6 flex flex-wrap gap-1.5">
+        {note.pills.map((p) => (
+          <span
+            key={p}
+            className="t-caption px-2 py-1"
+            style={{
+              border: `1px solid ${HAIR}`,
+              borderRadius: 2,
+              letterSpacing: "0.2em",
+              opacity: 0.75,
+            }}
+          >
+            {p}
+          </span>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   06 · Journey
    ────────────────────────────────────────────────────────────────────── */
 function JourneyEntry({ entry, i }) {
   const ref = useRef(null);
@@ -1487,10 +1827,10 @@ function Journey() {
     >
       <div className="grid grid-cols-12 gap-6">
         <div className="hidden md:block col-span-1">
-          <VRot>JOURNEY — 05</VRot>
+          <VRot>JOURNEY — 06</VRot>
         </div>
         <div className="col-span-12 md:col-span-11">
-          <SectionLabel index="05" title="Journey" count="2017 → TODAY" />
+          <SectionLabel index="06" title="Journey" count="2017 → TODAY" />
           <Reveal delay={0.05}>
             <h2 className="mt-10 t-section">
               <span className="block overflow-hidden">A working</span>
@@ -1531,6 +1871,7 @@ function Journey() {
    06 · Experimental Lab
    ────────────────────────────────────────────────────────────────────── */
 function LabTile({ entry, i }) {
+  const relative = useRelativeTime(entry.touched);
   return (
     <Reveal delay={i * 0.05}>
       <motion.div
@@ -1559,6 +1900,11 @@ function LabTile({ entry, i }) {
         >
           {entry.title}
         </h3>
+        {entry.tech && (
+          <div className="mt-2 t-caption opacity-55" style={{ letterSpacing: "0.3em" }}>
+            {entry.tech}
+          </div>
+        )}
         <p
           className="mt-3 font-serif italic opacity-75 flex-grow"
           style={{
@@ -1570,8 +1916,24 @@ function LabTile({ entry, i }) {
         >
           {entry.body}
         </p>
-        <div className="mt-6 t-caption opacity-45">
-          LAST TOUCHED · {entry.since.toUpperCase()}
+        <div className="mt-6 flex items-end justify-between gap-3">
+          <div className="t-caption opacity-45">
+            LAST TOUCHED · {relative.toUpperCase()}
+          </div>
+          {entry.repo ? (
+            <a
+              href={entry.repo}
+              target="_blank"
+              rel="noreferrer"
+              data-cursor="hover"
+              className="ss-link t-meta-tight"
+              style={{ paddingBottom: 2 }}
+            >
+              Repo ↗
+            </a>
+          ) : (
+            <span className="t-caption opacity-30">PRIVATE</span>
+          )}
         </div>
       </motion.div>
     </Reveal>
@@ -1587,11 +1949,11 @@ function ExperimentalLab() {
     >
       <div className="grid grid-cols-12 gap-6">
         <div className="hidden md:block col-span-1">
-          <VRot>LAB — 06</VRot>
+          <VRot>LAB — 07</VRot>
         </div>
         <div className="col-span-12 md:col-span-11">
           <SectionLabel
-            index="06"
+            index="07"
             title="Experimental Lab"
             count={`${LAB.length} EXPERIMENTS`}
           />
@@ -1642,10 +2004,10 @@ function Philosophy() {
       className="relative px-5 md:px-10 py-32 md:py-44 overflow-hidden"
       style={{ background: BG, color: FG }}
     >
-      <SectionLabel index="07" title="Philosophy" count="5 LINES" />
+      <SectionLabel index="08" title="Philosophy" count="5 LINES" />
       <div className="grid grid-cols-12 gap-6 mt-12">
         <div className="hidden md:block col-span-1">
-          <VRot>PHILOSOPHY — 07</VRot>
+          <VRot>PHILOSOPHY — 08</VRot>
         </div>
         <div className="col-span-12 md:col-span-10 md:col-start-2">
           <div className="space-y-8 md:space-y-10 mt-8 md:mt-16">
@@ -1735,7 +2097,7 @@ function Contact({ time }) {
             className="inline-block w-1.5 h-1.5 rounded-full"
             style={{ background: ACCENT }}
           />
-          <span style={{ color: ACCENT }}>INDEX / 08</span>
+          <span style={{ color: ACCENT }}>INDEX / 09</span>
           <span className="opacity-45">— Contact</span>
         </div>
         <div className="flex items-center gap-3 opacity-65">
@@ -1968,6 +2330,7 @@ export default function Page() {
         <CurrentFocus time={time} />
         <SelectedWork />
         <Systems />
+        <FieldNotes />
         <Journey />
         <ExperimentalLab />
         <Philosophy />

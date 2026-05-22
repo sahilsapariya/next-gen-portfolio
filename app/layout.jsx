@@ -1,5 +1,5 @@
 import "./globals.css";
-import { Newsreader, JetBrains_Mono, Caveat_Brush } from "next/font/google";
+import { Newsreader, JetBrains_Mono, Caveat_Brush, Inter } from "next/font/google";
 
 /* Newsreader — variable, optical sizing axis, italic+roman.
    Replaces Fraunces. Single editorial serif for display + body. */
@@ -27,6 +27,15 @@ const caveat = Caveat_Brush({
   variable: "--font-script",
 });
 
+/* Inter — subtle sans-serif for long-form body where readability beats editorial.
+   Used only in Field Notes; doesn't displace Newsreader as the main voice. */
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500"],
+  display: "swap",
+  variable: "--font-sans",
+});
+
 export const metadata = {
   title: "Sahil Sapariya — Engineer, Product Builder",
   description:
@@ -41,7 +50,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${newsreader.variable} ${jetbrains.variable} ${caveat.variable}`}
+      className={`${newsreader.variable} ${jetbrains.variable} ${caveat.variable} ${inter.variable}`}
     >
       <body>{children}</body>
     </html>
