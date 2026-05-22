@@ -220,10 +220,10 @@ export function Contact({ time }) {
             className="mt-20 md:mt-28 font-script"
             style={{
               fontSize: "clamp(72px, 13vw, 220px)",
-              lineHeight: 0.98,
+              lineHeight: 1.18,
               color: BG,
               letterSpacing: "-0.005em",
-              paddingBottom: "0.05em",
+              paddingBottom: "0.12em",
               position: "relative",
             }}
           >

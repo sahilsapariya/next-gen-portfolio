@@ -1,5 +1,6 @@
 export { DrawPath } from "./DrawPath";
 export { Hairline } from "./Hairline";
+export { LivePreview } from "./LivePreview";
 export { MarqueeRow } from "./MarqueeRow";
 export { Reveal } from "./Reveal";
 export { SectionLabel } from "./SectionLabel";

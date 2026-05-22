@@ -107,28 +107,31 @@ img {
 }
 
 /* Display sizes — the editorial scale.
-   line-height kept ≥ 0.9 so italic descenders (y, p, g, j) clear the
-   overflow-hidden line wrappers used by SplitText reveals. */
+   line-height bumped to ≥ 1.0 to give italic descenders (y, p, g, j)
+   full vertical clearance, and to add visible breathing room between
+   stacked lines of multi-line headlines. */
 .t-display {
   font-family: var(--font-serif), Newsreader, serif;
   font-size: clamp(64px, 11vw, 192px);
-  line-height: 0.92;
+  line-height: 1.02;
   letter-spacing: -0.045em;
+  word-spacing: 0.04em;
   font-variation-settings: "opsz" 144;
   font-weight: 300;
 }
 .t-section {
   font-family: var(--font-serif), Newsreader, serif;
   font-size: clamp(60px, 10vw, 180px);
-  line-height: 0.9;
+  line-height: 1;
   letter-spacing: -0.05em;
+  word-spacing: 0.04em;
   font-variation-settings: "opsz" 144;
   font-weight: 300;
 }
 .t-block {
   font-family: var(--font-serif), Newsreader, serif;
   font-size: clamp(40px, 5vw, 80px);
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: -0.025em;
   font-variation-settings: "opsz" 72;
   font-weight: 400;

@@ -5,7 +5,13 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 import { ACCENT, BG, FG, HAIR, HAIR_STRONG } from "@/lib/tokens";
 import { PROJECTS } from "@/lib/content";
 import { useIsMobile } from "@/hooks";
-import { Hairline, Reveal, SectionLabel, VRot } from "@/components/primitives";
+import {
+  Hairline,
+  LivePreview,
+  Reveal,
+  SectionLabel,
+  VRot,
+} from "@/components/primitives";
 
 /* ProjectPanel — desktop renders a pinned 320vh section that morphs through
    3 stages (Context · Decision · Outcome) as you scroll. Mobile falls back
@@ -141,9 +147,15 @@ function ProjectPanel({ project }) {
           {/* Stage 1 — context */}
           <motion.div
             style={{ opacity: oContext }}
-            className="absolute inset-0 grid grid-cols-12 gap-6"
+            className="absolute inset-0 grid grid-cols-12 gap-6 md:gap-10"
           >
-            <div className="col-span-12 md:col-span-7">
+            <div
+              className={
+                project.preview
+                  ? "col-span-12 md:col-span-7"
+                  : "col-span-12 md:col-span-9"
+              }
+            >
               <div className="t-caption mb-4 opacity-55">CONTEXT</div>
               <p className="t-lead">{project.context}</p>
               <p className="mt-6 t-lead italic opacity-80">{project.role}</p>
@@ -158,6 +170,11 @@ function ProjectPanel({ project }) {
                 </div>
               )}
             </div>
+            {project.preview && (
+              <div className="col-span-12 md:col-span-5 self-start">
+                <LivePreview preview={project.preview} />
+              </div>
+            )}
           </motion.div>
 
           {/* Stage 2 — decision */}
