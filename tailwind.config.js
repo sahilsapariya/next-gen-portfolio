@@ -9,7 +9,7 @@ module.exports = {
       colors: {
         bg: "#0E0E0C",
         fg: "#EAE5DC",
-        accent: "#FF5B2A",
+        accent: "#DE4C1B",
         live: "#4DB874",
         muted: "#8B847A",
       },

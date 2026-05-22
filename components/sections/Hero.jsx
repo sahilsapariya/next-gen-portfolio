@@ -33,7 +33,7 @@ export function Hero({ reduced, time }) {
       className="relative min-h-screen w-full overflow-hidden flex flex-col"
       style={{ background: BG, color: FG }}
     >
-      <div className="relative z-10 grid grid-cols-12 gap-4 px-5 md:px-10 pt-32 md:pt-44 pb-12">
+      <div className="relative z-10 grid grid-cols-12 gap-4 px-5 md:px-10 pt-28 md:pt-44 pb-10 md:pb-12">
         <div className="hidden md:flex col-span-1 flex-col gap-4 t-caption">
           ©
           <br />
@@ -41,7 +41,10 @@ export function Hero({ reduced, time }) {
         </div>
         <div className="col-span-12 md:col-span-10 ss-hero-main">
           <Reveal y={20}>
-            <div className="flex items-center gap-3 t-meta">
+            <div
+              className="flex items-center gap-2 md:gap-3 t-meta flex-wrap"
+              style={{ rowGap: 6 }}
+            >
               <motion.span
                 aria-hidden
                 className="inline-block w-1.5 h-1.5 rounded-full"
@@ -50,8 +53,12 @@ export function Hero({ reduced, time }) {
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
               />
               <span style={{ color: ACCENT }}>SAHIL SAPARIYA</span>
-              <span className="opacity-50">—</span>
-              <span>ENGINEER · PRODUCT BUILDER · SYSTEMS THINKER</span>
+              <span className="opacity-50 hidden sm:inline">—</span>
+              {/* Compact role line on phones, full triplet from sm+ */}
+              <span className="sm:hidden">ENGINEER · PRODUCT BUILDER</span>
+              <span className="hidden sm:inline">
+                ENGINEER · PRODUCT BUILDER · SYSTEMS THINKER
+              </span>
             </div>
           </Reveal>
 

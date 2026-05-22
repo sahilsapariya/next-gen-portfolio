@@ -117,7 +117,7 @@ export function LivePreview({ preview }) {
           "0 18px 40px -12px rgba(0,0,0,0.55), 0 6px 14px -4px rgba(0,0,0,0.3)",
         background: hasImage
           ? BG
-          : "linear-gradient(135deg, rgba(255,91,42,0.05), rgba(234,229,220,0.015) 55%)",
+          : "linear-gradient(135deg, rgba(222,76,27,0.05), rgba(234,229,220,0.015) 55%)",
       }}
     >
       <MacChrome display={display} />
@@ -142,28 +142,79 @@ export function LivePreview({ preview }) {
               display: "block",
             }}
           />
-          {/* CTA strip overlaid at the bottom */}
+          {/* CTA strip overlaid at the bottom — explicit font properties
+              instead of t-caption so the labels render at full opacity
+              against the image; gradient + drop-shadow ensure
+              legibility on any underlying screenshot. */}
           <div
-            className="absolute bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-between t-caption"
+            className="absolute bottom-0 left-0 right-0 px-5 py-4 flex items-center justify-between"
             style={{
               background:
-                "linear-gradient(to top, rgba(14,14,12,0.85), rgba(14,14,12,0))",
+                "linear-gradient(to top, rgba(14,14,12,0.96) 25%, rgba(14,14,12,0.45) 75%, rgba(14,14,12,0))",
               color: "#EAE5DC",
+              fontFamily: "var(--font-mono), monospace",
+              fontSize: 11.5,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontWeight: 500,
+              textShadow: "0 1px 2px rgba(0,0,0,0.4)",
             }}
           >
-            <span style={{ color: ACCENT }}>
+            <span
+              style={{
+                color: ACCENT,
+                fontWeight: 600,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+              }}
+            >
+              <span
+                aria-hidden
+                style={{
+                  display: "inline-block",
+                  width: 6,
+                  height: 6,
+                  borderRadius: 999,
+                  background: ACCENT,
+                  boxShadow: `0 0 6px ${ACCENT}`,
+                }}
+              />
               {preview.label || "LIVE MARKETING SITE"}
             </span>
             <span className="inline-flex items-center gap-2">
               VISIT SITE
-              <ArrowUpRight size={11} />
+              <ArrowUpRight size={13} strokeWidth={2.4} />
             </span>
           </div>
         </div>
       ) : (
         /* Wordmark mode — designed editorial card */
         <div className="p-7 md:p-9 flex flex-col">
-          <div className="t-caption" style={{ color: ACCENT }}>
+          <div
+            style={{
+              color: ACCENT,
+              fontFamily: "var(--font-mono), monospace",
+              fontSize: 11,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              fontWeight: 600,
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <span
+              aria-hidden
+              style={{
+                display: "inline-block",
+                width: 6,
+                height: 6,
+                borderRadius: 999,
+                background: ACCENT,
+                boxShadow: `0 0 6px ${ACCENT}`,
+              }}
+            />
             {preview.label || "LIVE MARKETING SITE"}
           </div>
           <h4

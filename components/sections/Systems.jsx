@@ -90,15 +90,15 @@ function FlowDiagram() {
         {/* "iterate" label on the loop */}
         <motion.text
           x={625}
-          y={306}
+          y={308}
           textAnchor="middle"
           fill={FG}
-          fontSize="9"
+          fontSize="12"
           fontFamily="var(--font-mono), monospace"
-          letterSpacing="0.35em"
-          style={{ textTransform: "uppercase", opacity: 0.45 }}
+          letterSpacing="0.32em"
+          style={{ textTransform: "uppercase", opacity: 0.5 }}
           initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.45 } : {}}
+          animate={inView ? { opacity: 0.5 } : {}}
           transition={{ duration: 0.6, delay: 2.8 }}
         >
           iterate
@@ -141,9 +141,9 @@ function FlowDiagram() {
                 y={labelY}
                 textAnchor="middle"
                 fill={FG}
-                fontSize="10"
+                fontSize="13"
                 fontFamily="var(--font-mono), monospace"
-                letterSpacing="0.25em"
+                letterSpacing="0.22em"
                 style={{ textTransform: "uppercase" }}
                 initial={{ opacity: 0, y: s.side === "above" ? -4 : 4 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}

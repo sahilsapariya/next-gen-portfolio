@@ -44,11 +44,11 @@ export default async function OpengraphImage() {
               width: 10,
               height: 10,
               borderRadius: 999,
-              background: "#FF5B2A",
+              background: "#DE4C1B",
               display: "block",
             }}
           />
-          <div style={{ color: "#FF5B2A" }}>INDEX / 00</div>
+          <div style={{ color: "#DE4C1B" }}>INDEX / 00</div>
           <div style={{ opacity: 0.5 }}>—</div>
           <div>ENGINEER · PRODUCT BUILDER · SYSTEMS THINKER</div>
         </div>
@@ -69,7 +69,7 @@ export default async function OpengraphImage() {
           }}
         >
           {PERSON.name}
-          <span style={{ color: "#FF5B2A", fontStyle: "normal" }}>.</span>
+          <span style={{ color: "#DE4C1B", fontStyle: "normal" }}>.</span>
         </div>
 
         {/* Subhead */}

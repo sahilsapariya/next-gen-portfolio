@@ -11,7 +11,7 @@
   /* Palette */
   --bg: #0E0E0C;
   --fg: #EAE5DC;
-  --accent: #FF5B2A;
+  --accent: #DE4C1B;
   --live: #4DB874;
   --muted: #8B847A;
 
@@ -60,6 +60,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "ss01", "ss02", "kern";
+  /* Prevent horizontal scroll caused by overflowing decorations (marquees,
+     wave SVGs, scaled headings) on small viewports. */
+  overflow-x: hidden;
+  /* Better tap response on touch devices. */
+  -webkit-tap-highlight-color: transparent;
+  /* Account for iOS safe areas (notch, home indicator). */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Smooth anchor jumps from the mobile menu. Desktop nav anchor click
+   inherits this too — harmless. */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 ::selection {
@@ -240,6 +260,7 @@ img {
   align-items: center;
   gap: 12px;
   padding: 13px 22px;
+  min-height: 44px; /* iOS/Android touch-target minimum */
   border-radius: 999px;
   font-family: var(--font-mono), monospace;
   font-size: 11px;
@@ -410,14 +431,38 @@ img {
 }
 
 /* ──────────────────────────────────────────────────────────────────────
-   Mobile collapses
+   Mobile (≤ 820 px)
    ────────────────────────────────────────────────────────────────────── */
 @media (max-width: 820px) {
   html,
   body {
     cursor: auto;
   }
-  .ss-nav {
-    display: none !important;
+
+  /* Mac-style chrome stays visible but tighter on phone widths */
+  .ss-mac-chrome {
+    padding: 8px 10px !important;
+  }
+
+  /* The macOS shadow is intense on desktop; soften it on mobile so the
+     preview doesn't dominate the section */
+  .ss-live-preview {
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5),
+      0 3px 8px -2px rgba(0, 0, 0, 0.25) !important;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Small phones (≤ 480 px) — extra-tight padding so dense content fits
+   ────────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Tighter side padding so content doesn't feel cramped against edges */
+  .ss-mac-chrome {
+    padding: 7px 9px !important;
+    gap: 8px !important;
+  }
+  /* Buttons can wrap to full width on tiny screens for thumb-friendly hit */
+  .ss-btn {
+    padding: 12px 18px !important;
   }
 }
