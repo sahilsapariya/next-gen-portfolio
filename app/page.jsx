@@ -2123,7 +2123,7 @@ function Contact({ time }) {
           className="mt-6 font-serif font-light"
           style={{
             fontSize: "clamp(48px, 8vw, 140px)",
-            lineHeight: 0.95,
+            lineHeight: 1.05,
             letterSpacing: "-0.035em",
             fontVariationSettings: "'opsz' 144",
             maxWidth: "18ch",
@@ -2216,9 +2216,10 @@ function Contact({ time }) {
           className="mt-20 md:mt-28 font-script"
           style={{
             fontSize: "clamp(72px, 13vw, 220px)",
-            lineHeight: 0.85,
+            lineHeight: 0.98,
             color: BG,
             letterSpacing: "-0.005em",
+            paddingBottom: "0.05em",
           }}
         >
           Sahil Sapariya
