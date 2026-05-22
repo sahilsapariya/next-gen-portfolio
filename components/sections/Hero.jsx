@@ -169,7 +169,7 @@ export function Hero({ reduced, time }) {
         </div>
         <Hairline />
         <div className="py-8 md:py-10">
-          <MarqueeRow speed={36}>
+          <MarqueeRow speed={80}>
             {Array.from({ length: 10 }).map((_, i) => (
               <span
                 key={i}
