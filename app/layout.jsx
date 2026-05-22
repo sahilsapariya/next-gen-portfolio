@@ -46,6 +46,13 @@ export const metadata = {
   },
 };
 
+/* viewport export (Next.js 14 API) — drives the browser chrome colour
+   on mobile (Safari address bar tint, Android theme) so it matches the
+   site instead of defaulting to white. */
+export const viewport = {
+  themeColor: "#0E0E0C",
+};
+
 export default function RootLayout({ children }) {
   return (
     <html
