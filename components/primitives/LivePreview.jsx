@@ -1,12 +1,102 @@
 "use client";
 
 import { ArrowUpRight } from "lucide-react";
-import { ACCENT, HAIR, HAIR_STRONG } from "@/lib/tokens";
+import { ACCENT, BG, HAIR, HAIR_STRONG } from "@/lib/tokens";
+
+/* macOS-style window chrome — proper traffic light colours,
+   centered URL bar with padlock, subtle inset depth.
+   Same chrome strip used for both wordmark and image modes so the
+   preview reads as a real browser window in either case. */
+function MacChrome({ display }) {
+  return (
+    <div
+      className="ss-mac-chrome flex items-center gap-3 px-3 py-2.5"
+      style={{
+        background:
+          "linear-gradient(180deg, rgba(234,229,220,0.06), rgba(234,229,220,0.025))",
+        borderBottom: `1px solid ${HAIR}`,
+      }}
+    >
+      {/* Traffic lights — real macOS colours */}
+      <div className="flex gap-[6px] shrink-0" aria-hidden>
+        <span
+          className="block rounded-full"
+          style={{
+            width: 11,
+            height: 11,
+            background: "#FF5F57",
+            boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.18)",
+          }}
+        />
+        <span
+          className="block rounded-full"
+          style={{
+            width: 11,
+            height: 11,
+            background: "#FEBC2E",
+            boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.18)",
+          }}
+        />
+        <span
+          className="block rounded-full"
+          style={{
+            width: 11,
+            height: 11,
+            background: "#28C840",
+            boxShadow: "inset 0 0 0 0.5px rgba(0,0,0,0.18)",
+          }}
+        />
+      </div>
+
+      {/* URL pill — Safari-style centered bar with padlock */}
+      <div
+        className="flex-grow flex items-center justify-center gap-2 px-3 py-1"
+        style={{
+          background: "rgba(14,14,12,0.45)",
+          border: `1px solid rgba(234,229,220,0.06)`,
+          borderRadius: 6,
+          maxWidth: "70%",
+          margin: "0 auto",
+          minHeight: 22,
+        }}
+      >
+        <svg
+          width="10"
+          height="10"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden
+          style={{ opacity: 0.55, flexShrink: 0 }}
+        >
+          <rect x="3" y="11" width="18" height="11" rx="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        <span
+          className="font-mono truncate"
+          style={{
+            fontSize: 10.5,
+            letterSpacing: "0.02em",
+            opacity: 0.85,
+          }}
+        >
+          {display}
+        </span>
+      </div>
+
+      {/* Visit-cue arrow on the far right to balance the lights */}
+      <span aria-hidden style={{ opacity: 0.5, flexShrink: 0 }}>
+        <ArrowUpRight size={13} />
+      </span>
+    </div>
+  );
+}
 
 /* LivePreview — a designed card for case studies. Two modes:
-   1. Wordmark mode  → faux URL chrome + serif title + italic tagline +
+   1. Wordmark mode  → macOS chrome + serif title + italic tagline +
                        visit CTA. Used when no screenshot is available.
-   2. Image mode     → faux URL chrome + the real screenshot below.
+   2. Image mode     → macOS chrome + the real screenshot below.
                        Triggered by setting `preview.image`. */
 export function LivePreview({ preview }) {
   if (!preview) return null;
@@ -22,46 +112,18 @@ export function LivePreview({ preview }) {
       className="ss-live-preview block group relative overflow-hidden"
       style={{
         border: `1px solid ${HAIR_STRONG}`,
-        borderRadius: 2,
+        borderRadius: 10,
+        boxShadow:
+          "0 18px 40px -12px rgba(0,0,0,0.55), 0 6px 14px -4px rgba(0,0,0,0.3)",
         background: hasImage
-          ? "rgba(14,14,12,0.6)"
+          ? BG
           : "linear-gradient(135deg, rgba(255,91,42,0.05), rgba(234,229,220,0.015) 55%)",
       }}
     >
-      {/* Faux URL chrome — consistent across modes */}
-      <div
-        className="flex items-center gap-3 px-4 py-3"
-        style={{ borderBottom: `1px solid ${HAIR}` }}
-      >
-        <span className="flex gap-1.5" aria-hidden>
-          <span
-            className="block w-2 h-2 rounded-full"
-            style={{ background: "rgba(234,229,220,0.22)" }}
-          />
-          <span
-            className="block w-2 h-2 rounded-full"
-            style={{ background: "rgba(234,229,220,0.22)" }}
-          />
-          <span
-            className="block w-2 h-2 rounded-full"
-            style={{ background: "rgba(234,229,220,0.22)" }}
-          />
-        </span>
-        <span
-          className="flex-grow text-center font-mono opacity-65"
-          style={{
-            fontSize: 10,
-            letterSpacing: "0.18em",
-            textTransform: "lowercase",
-          }}
-        >
-          {display}
-        </span>
-        <ArrowUpRight size={12} style={{ opacity: 0.55 }} />
-      </div>
+      <MacChrome display={display} />
 
       {hasImage ? (
-        /* Image mode — screenshot stretched into a fixed aspect frame */
+        /* Image mode — screenshot in a fixed-aspect frame */
         <div className="relative" style={{ aspectRatio: "16 / 10" }}>
           <img
             src={preview.image}
