@@ -1,12 +1,14 @@
 import "./globals.css";
-import { Fraunces, JetBrains_Mono, Instrument_Serif, Caveat_Brush } from "next/font/google";
+import { Newsreader, JetBrains_Mono, Caveat_Brush } from "next/font/google";
 
-const fraunces = Fraunces({
+/* Newsreader — variable, optical sizing axis, italic+roman.
+   Replaces Fraunces. Single editorial serif for display + body. */
+const newsreader = Newsreader({
   subsets: ["latin"],
   axes: ["opsz"],
   style: ["normal", "italic"],
   display: "swap",
-  variable: "--font-fraunces",
+  variable: "--font-serif",
 });
 
 const jetbrains = JetBrains_Mono({
@@ -17,28 +19,21 @@ const jetbrains = JetBrains_Mono({
   preload: true,
 });
 
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-instrument",
-});
-
+/* Caveat Brush — one use only: the signature wordmark in Contact */
 const caveat = Caveat_Brush({
   subsets: ["latin"],
   weight: ["400"],
   display: "swap",
-  variable: "--font-caveat",
+  variable: "--font-script",
 });
 
 export const metadata = {
-  title: "Sahil Sapariya — Portfolio 2026",
+  title: "Sahil Sapariya — Engineer, Product Builder",
   description:
-    "Full-stack developer specializing in backend-first web. Selected work, experience, and contact.",
+    "An engineer building systems end to end. Selected work, current focus, and notes.",
   openGraph: {
-    title: "Sahil Sapariya — Portfolio 2026",
-    description: "Backend-first full-stack developer based in Ahmedabad.",
+    title: "Sahil Sapariya — Engineer, Product Builder",
+    description: "Backend-first engineer based in Ahmedabad.",
   },
 };
 
@@ -46,7 +41,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${jetbrains.variable} ${instrument.variable} ${caveat.variable}`}
+      className={`${newsreader.variable} ${jetbrains.variable} ${caveat.variable}`}
     >
       <body>{children}</body>
     </html>
