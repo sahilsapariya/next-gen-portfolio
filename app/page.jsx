@@ -57,7 +57,6 @@ const PROJECTS = [
     stack: ["Django REST", "React", "Redux", "PostgreSQL", "SaaS"],
     repo: "https://github.com/sahilsapariya/nirmaan-yaatra",
     live: "https://nirmaanyaatra.netlify.app",
-    img: "/projects/nirmaan.jpg",
   },
   {
     n: "02",
@@ -68,7 +67,6 @@ const PROJECTS = [
     stack: ["Panolens.js", "Three.js", "HTML", "CSS"],
     repo: "https://github.com/sahilsapariya/college360",
     live: "https://college360.netlify.app",
-    img: "/projects/college360.jpg",
   },
   {
     n: "03",
@@ -79,7 +77,6 @@ const PROJECTS = [
     stack: ["Next.js", "PostgreSQL", "Prisma", "Tailwind"],
     repo: "https://github.com/sahilsapariya/elite-mode",
     live: "https://elitemode.vercel.app",
-    img: "/projects/elitemode.jpg",
   },
   {
     n: "04",
@@ -89,7 +86,6 @@ const PROJECTS = [
     stack: ["Next.js", "Tailwind"],
     repo: "https://github.com/sahilsapariya/surebank",
     live: "https://surebank.vercel.app",
-    img: "/projects/surebank.jpg",
   },
 ];
 
@@ -189,6 +185,37 @@ function useLiveTime(tz = "Asia/Kolkata") {
   return t;
 }
 
+/* Magnetic button effect — element subtly translates toward the cursor */
+function useMagnetic(strength = 0.25) {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    let raf;
+    const onMove = (e) => {
+      const rect = el.getBoundingClientRect();
+      const x = e.clientX - (rect.left + rect.width / 2);
+      const y = e.clientY - (rect.top + rect.height / 2);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        el.style.transform = `translate3d(${x * strength}px, ${y * strength}px, 0)`;
+      });
+    };
+    const onLeave = () => {
+      cancelAnimationFrame(raf);
+      el.style.transform = `translate3d(0, 0, 0)`;
+    };
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", onLeave);
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", onLeave);
+    };
+  }, [strength]);
+  return ref;
+}
+
 /* Active nav section via IntersectionObserver */
 function useActiveSection(ids) {
   const [active, setActive] = useState(ids[0]);
@@ -261,9 +288,11 @@ function useLenisLike(enabled) {
 function SectionLabel({ index, title }) {
   return (
     <div className="flex items-center gap-3 select-none font-mono text-[11px] tracking-[0.35em] uppercase">
-      <span
+      <motion.span
         className="inline-block w-1.5 h-1.5 rounded-full"
         style={{ background: ACCENT }}
+        animate={{ opacity: [1, 0.5, 1] }}
+        transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
         aria-hidden
       />
       <span style={{ color: ACCENT }}>INDEX / {index}</span>
@@ -417,7 +446,7 @@ function ScrollProgress() {
     <motion.div
       aria-hidden
       style={{
-        position: "fixed", top: 0, left: 0, right: 0, height: 1.5,
+        position: "fixed", top: 0, left: 0, right: 0, height: 2.5,
         background: ACCENT, transformOrigin: "0 50%", scaleX,
         zIndex: 90,
       }}
@@ -442,15 +471,15 @@ function HeroBlob({ mx, my }) {
           <div
             className="absolute inset-0 rounded-full"
             style={{
-              opacity: 0.20, filter: "blur(48px)",
+              opacity: 0.14, filter: "blur(56px)",
               background: `conic-gradient(from 120deg, ${ACCENT}, transparent 35%, ${ACCENT} 60%, transparent 90%)`,
             }}
           />
           <div
             className="absolute rounded-full"
             style={{
-              inset: "10%", mixBlendMode: "screen", filter: "blur(22px)",
-              background: `radial-gradient(circle at 32% 30%, rgba(255,74,28,0.6), rgba(255,74,28,0) 55%), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.07), transparent 60%)`,
+              inset: "10%", mixBlendMode: "screen", filter: "blur(28px)",
+              background: `radial-gradient(circle at 32% 30%, rgba(255,74,28,0.5), rgba(255,74,28,0) 55%), radial-gradient(circle at 70% 70%, rgba(255,255,255,0.05), transparent 60%)`,
             }}
           />
           <svg className="absolute" style={{ inset: "16%", opacity: 0.20 }} viewBox="0 0 200 200">
@@ -616,6 +645,8 @@ function Nav({ time }) {
 function Hero({ reduced }) {
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
+  const magResume = useMagnetic(0.22);
+  const magContact = useMagnetic(0.22);
   const onMove = useCallback(
     (e) => {
       const r = e.currentTarget.getBoundingClientRect();
@@ -661,8 +692,8 @@ function Hero({ reduced }) {
             className="mt-8 font-serif font-light"
             style={{
               fontSize: "clamp(72px, 13vw, 220px)",
-              lineHeight: 0.86,
-              letterSpacing: "-0.045em",
+              lineHeight: 0.85,
+              letterSpacing: "-0.05em",
               fontVariationSettings: "'opsz' 144",
             }}
           >
@@ -678,9 +709,13 @@ function Hero({ reduced }) {
                   marginLeft: "0.05em",
                   fontSize: "0.7em",
                   lineHeight: 1,
+                  transformOrigin: "center",
                 }}
-                animate={reduced ? {} : { rotate: 360 }}
-                transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+                animate={reduced ? {} : { rotate: [0, 180], scale: [1, 1.08, 1] }}
+                transition={{
+                  rotate: { duration: 24, repeat: Infinity, ease: "linear" },
+                  scale: { duration: 2.4, repeat: Infinity, ease: "easeInOut" },
+                }}
               >
                 *
               </motion.span>
@@ -701,25 +736,29 @@ function Hero({ reduced }) {
 
           <Reveal delay={0.7} y={20}>
             <div className="mt-10 flex flex-wrap gap-3">
-              <a
-                href={RESUME}
-                target="_blank"
-                rel="noreferrer"
-                data-cursor="hover"
-                className="ss-btn ss-btn-outline"
-              >
-                <Download size={14} />
-                <span>Download Resume</span>
-                <span className="ss-btn-arrow"><ArrowUpRight size={14} /></span>
-              </a>
-              <a
-                href="#contact"
-                data-cursor="hover"
-                className="ss-btn ss-btn-accent"
-              >
-                <span>Get in Touch</span>
-                <span className="ss-btn-arrow"><ArrowRight size={14} /></span>
-              </a>
+              <div ref={reduced ? null : magResume} className="ss-mag-wrap">
+                <a
+                  href={RESUME}
+                  target="_blank"
+                  rel="noreferrer"
+                  data-cursor="hover"
+                  className="ss-btn ss-btn-outline"
+                >
+                  <Download size={14} />
+                  <span>Download Resume</span>
+                  <span className="ss-btn-arrow"><ArrowUpRight size={14} /></span>
+                </a>
+              </div>
+              <div ref={reduced ? null : magContact} className="ss-mag-wrap">
+                <a
+                  href="#contact"
+                  data-cursor="hover"
+                  className="ss-btn ss-btn-accent"
+                >
+                  <span>Get in Touch</span>
+                  <span className="ss-btn-arrow"><ArrowRight size={14} /></span>
+                </a>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -758,8 +797,20 @@ function Hero({ reduced }) {
                   fontVariationSettings: "'opsz' 144",
                 }}
               >
-                SYNTAX BLAZER <span style={{ color: ACCENT }}>🔥</span>
-                <span className="opacity-30" style={{ margin: "0 22px" }}>·</span>
+                SYNTAX BLAZER
+                <span
+                  aria-hidden
+                  style={{
+                    display: "inline-block",
+                    color: ACCENT,
+                    margin: "0 0.35em",
+                    transform: "translateY(-0.06em)",
+                    fontSize: "0.6em",
+                  }}
+                >
+                  ◆
+                </span>
+                <span className="opacity-25" style={{ margin: "0 22px" }}>·</span>
               </span>
             ))}
           </Marquee>
@@ -817,13 +868,16 @@ function About() {
             </p>
           </Reveal>
         </div>
-        <div className="ss-about-meta col-span-12 md:col-span-4 md:col-start-9 mt-12 md:mt-24">
+        <div className="ss-about-meta col-span-12 md:col-span-4 mt-12 md:mt-24">
           <Hairline strong />
-          {meta.map(([k, v]) => (
+          {meta.map(([k, v], i) => (
             <Reveal key={k} delay={0.05}>
-              <div className="grid grid-cols-3 py-5 font-mono text-[11px] tracking-[0.22em] uppercase">
-                <div className="opacity-45">{k}</div>
-                <div className="col-span-2">{v}</div>
+              <div className="grid grid-cols-12 gap-3 py-5 items-baseline font-mono text-[11px] tracking-[0.2em] uppercase">
+                <div className="col-span-1 opacity-35 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </div>
+                <div className="col-span-3 opacity-50">{k}</div>
+                <div className="col-span-8">{v}</div>
               </div>
               <Hairline />
             </Reveal>
@@ -835,58 +889,16 @@ function About() {
 }
 
 /* ──────────────────────────────────────────────────────────────────────── */
-/*  Work — projects with cursor-following preview                            */
+/*  Work — projects                                                          */
 /* ──────────────────────────────────────────────────────────────────────── */
-function CursorImage({ project, mouse }) {
-  const x = useSpring(mouse.x, { damping: 22, stiffness: 200, mass: 0.5 });
-  const y = useSpring(mouse.y, { damping: 22, stiffness: 200, mass: 0.5 });
-  return (
-    <motion.div
-      aria-hidden
-      style={{
-        position: "fixed",
-        top: 0, left: 0,
-        x, y,
-        translateX: "-50%", translateY: "-50%",
-        zIndex: 70,
-        pointerEvents: "none",
-        width: 360, height: 270,
-        overflow: "hidden",
-        borderRadius: 2,
-      }}
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      transition={{ duration: 0.35, ease: EASE }}
-    >
-      <img
-        src={project.img}
-        alt=""
-        style={{
-          width: "100%", height: "100%", objectFit: "cover",
-          filter: "saturate(1.05) contrast(1.05)",
-        }}
-      />
-      <div
-        aria-hidden
-        style={{
-          position: "absolute", inset: 0, mixBlendMode: "overlay", opacity: 0.18,
-          background:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-    </motion.div>
-  );
-}
-
-function ProjectRow({ p, i, onHover }) {
+function ProjectRow({ p, i }) {
   const [hover, setHover] = useState(false);
   return (
     <motion.div
       layout
-      onMouseEnter={() => { setHover(true); onHover(p); }}
-      onMouseLeave={() => { setHover(false); onHover(null); }}
-      data-cursor="project"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      data-cursor="hover"
       className="group relative"
     >
       <Hairline strong />
@@ -964,7 +976,7 @@ function ProjectRow({ p, i, onHover }) {
                     </span>
                   ))}
                 </div>
-                <div className="mt-5 flex flex-wrap gap-5 font-mono text-[11px] tracking-[0.22em] uppercase">
+                <div className="mt-5 flex flex-wrap gap-5 font-mono text-[11px] tracking-[0.2em] uppercase">
                   <a href={p.repo} target="_blank" rel="noreferrer" className="ss-link">
                     Repository ↗
                   </a>
@@ -976,10 +988,12 @@ function ProjectRow({ p, i, onHover }) {
             )}
           </AnimatePresence>
         </div>
-        <div className="col-span-12 md:col-span-4 flex justify-end items-center gap-6">
-          <div className="font-mono text-[10px] tracking-[0.35em] uppercase opacity-50 text-right">
-            <div>{p.year}</div>
-            <div className="mt-1 opacity-60">PROJECT</div>
+        <div className="col-span-12 md:col-span-4 flex justify-end items-center gap-7">
+          <div
+            className="font-mono uppercase opacity-50 text-right tabular-nums"
+            style={{ fontSize: 11, letterSpacing: "0.3em" }}
+          >
+            {p.year}
           </div>
           <a
             href={p.live}
@@ -998,17 +1012,6 @@ function ProjectRow({ p, i, onHover }) {
 }
 
 function Work() {
-  const [hovered, setHovered] = useState(null);
-  const mouse = { x: useMotionValue(-300), y: useMotionValue(-300) };
-  useEffect(() => {
-    const onMove = (e) => {
-      mouse.x.set(e.clientX);
-      mouse.y.set(e.clientY);
-    };
-    window.addEventListener("mousemove", onMove);
-    return () => window.removeEventListener("mousemove", onMove);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
   return (
     <section
       id="work"
@@ -1032,7 +1035,7 @@ function Work() {
               style={{
                 fontSize: "clamp(60px, 11.2vw, 200px)",
                 lineHeight: 0.85,
-                letterSpacing: "-0.045em",
+                letterSpacing: "-0.05em",
                 fontVariationSettings: "'opsz' 144",
               }}
             >
@@ -1042,16 +1045,12 @@ function Work() {
           </Reveal>
           <div className="mt-16">
             {PROJECTS.map((p, i) => (
-              <ProjectRow key={p.n} p={p} i={i} onHover={setHovered} />
+              <ProjectRow key={p.n} p={p} i={i} />
             ))}
             <Hairline strong />
           </div>
         </div>
       </div>
-
-      <AnimatePresence>
-        {hovered && <CursorImage project={hovered} mouse={mouse} key={hovered.n} />}
-      </AnimatePresence>
     </section>
   );
 }
@@ -1177,7 +1176,7 @@ function Capabilities() {
                   <div className="font-mono text-[10px] tracking-[0.3em] uppercase opacity-40">
                     {String(i + 1).padStart(2, "0")}
                   </div>
-                  <div className="font-mono text-[11px] tracking-[0.22em] uppercase opacity-90">
+                  <div className="font-mono text-[11px] tracking-[0.2em] uppercase opacity-90">
                     {g.title}
                   </div>
                 </div>
@@ -1237,15 +1236,28 @@ function Experience() {
           </div>
           <Reveal delay={0.05}>
             <h2
-              className="mt-8 font-serif"
+              className="mt-10 font-serif font-light"
               style={{
-                fontSize: "clamp(54px, 9vw, 160px)",
-                lineHeight: 0.85,
-                letterSpacing: "-0.045em",
+                fontSize: "clamp(64px, 10.5vw, 200px)",
+                lineHeight: 0.82,
+                letterSpacing: "-0.05em",
                 fontVariationSettings: "'opsz' 144",
               }}
             >
-              Field <span className="italic" style={{ fontWeight: 400 }}>notes.</span>
+              <span className="block overflow-hidden">FIELD</span>
+              <span className="block overflow-hidden italic" style={{ fontWeight: 400 }}>
+                notes
+                <span
+                  style={{
+                    color: ACCENT,
+                    fontStyle: "normal",
+                    display: "inline-block",
+                    marginLeft: "0.02em",
+                  }}
+                >
+                  .
+                </span>
+              </span>
             </h2>
           </Reveal>
           <div className="mt-16">
@@ -1321,7 +1333,11 @@ function Testimonials() {
   return (
     <section
       className="relative px-5 md:px-10 py-32 md:py-56 overflow-hidden"
-      style={{ background: INK, color: IVORY }}
+      style={{
+        background: INK,
+        color: IVORY,
+        borderBottom: `1px solid ${HAIR_STRONG}`,
+      }}
     >
       <SectionLabel index="06" title="Testimonials" />
       <div className="grid grid-cols-12 gap-6 mt-12">
@@ -1352,7 +1368,7 @@ function Testimonials() {
               {Array.from({ length: 12 }).map((_, i) => (
                 <span
                   key={i}
-                  className="px-6 font-mono text-[12px] tracking-[0.45em] uppercase"
+                  className="px-6 font-mono text-[12px] tracking-[0.4em] uppercase"
                   style={{ opacity: i % 2 ? 0.6 : 0.3 }}
                 >
                   TESTIMONIALS<span style={{ margin: "0 18px" }}>·</span>
@@ -1365,35 +1381,47 @@ function Testimonials() {
           {TESTIMONIALS.map((t, i) => (
             <Reveal key={t.name} delay={i * 0.1}>
               <motion.div
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.4, ease: EASE }}
-                className="p-7"
+                whileHover={{ y: -6 }}
+                transition={{ duration: 0.5, ease: EASE }}
+                className="ss-testi-card p-8 md:p-10 relative"
                 style={{ border: `1px solid ${HAIR_STRONG}`, borderRadius: 2 }}
               >
                 <div className="flex items-center gap-4">
                   <div
-                    className="w-12 h-12 flex items-center justify-center font-mono"
+                    className="flex items-center justify-center font-mono"
                     style={{
+                      width: 52, height: 52,
                       background: ACCENT, color: INK,
-                      fontSize: 13, letterSpacing: "0.05em",
+                      fontSize: 14, letterSpacing: "0.05em",
                       borderRadius: 999,
                     }}
                   >
                     {t.name.split(" ").map((p) => p[0]).join("")}
                   </div>
                   <div>
-                    <div className="font-mono text-[12px] tracking-[0.18em] uppercase">{t.name}</div>
-                    <div className="mt-1 font-mono text-[10px] tracking-[0.25em] uppercase opacity-50">{t.role}</div>
+                    <div className="font-mono text-[12px] tracking-[0.2em] uppercase">
+                      {t.name}
+                    </div>
+                    <div className="mt-1.5 font-mono text-[10px] tracking-[0.3em] uppercase opacity-50">
+                      {t.role}
+                    </div>
                   </div>
-                  <div className="ml-auto font-mono text-[10px] tracking-[0.3em] uppercase opacity-30">
-                    0{i + 1}
+                  <div className="ml-auto font-mono text-[10px] tracking-[0.3em] uppercase opacity-30 tabular-nums">
+                    0{i + 1} / {TESTIMONIALS.length}
                   </div>
                 </div>
                 <p
-                  className="mt-6 font-serif"
-                  style={{ fontSize: 20, lineHeight: 1.35, letterSpacing: "-0.005em" }}
+                  className="mt-7 font-serif"
+                  style={{
+                    fontSize: 21,
+                    lineHeight: 1.4,
+                    letterSpacing: "-0.008em",
+                    fontVariationSettings: "'opsz' 36",
+                  }}
                 >
-                  <span style={{ color: ACCENT }}>“</span>{t.quote.replace(/^“|”$/g, "")}<span style={{ color: ACCENT }}>”</span>
+                  <span style={{ color: ACCENT }}>“</span>
+                  {t.quote.replace(/^“|”$/g, "")}
+                  <span style={{ color: ACCENT }}>”</span>
                 </p>
               </motion.div>
             </Reveal>
@@ -1488,7 +1516,7 @@ function Contact({ time }) {
   return (
     <section
       id="contact"
-      className="relative px-5 md:px-10 pt-32 md:pt-44 pb-10"
+      className="relative px-5 md:px-10 pt-32 md:pt-56 pb-10"
       style={{ background: IVORY, color: INK }}
     >
       {/* ─── Header band ──────────────────────────────────── */}
@@ -1750,7 +1778,7 @@ function Contact({ time }) {
                 fontWeight: 300,
                 fontSize: "clamp(80px, 17vw, 280px)",
                 lineHeight: 0.85,
-                letterSpacing: "-0.045em",
+                letterSpacing: "-0.05em",
                 color: "rgba(10,10,10,0.07)",
                 paddingRight: "0.4em",
                 fontVariationSettings: "'opsz' 144",
@@ -1775,16 +1803,22 @@ function Cursor() {
   const y = useMotionValue(-100);
   const sx = useSpring(x, { damping: 28, stiffness: 380, mass: 0.4 });
   const sy = useSpring(y, { damping: 28, stiffness: 380, mass: 0.4 });
-  const [mode, setMode] = useState("default"); // default | hover | project
+  const [mode, setMode] = useState("default"); // default | hover
 
   useEffect(() => {
     const mv = (e) => { x.set(e.clientX); y.set(e.clientY); };
     const over = (e) => {
       const t = e.target;
       if (!t || !t.closest) return;
-      if (t.closest("[data-cursor='project']")) setMode("project");
-      else if (t.closest("[data-cursor='hover']") || t.closest("a") || t.closest("button")) setMode("hover");
-      else setMode("default");
+      if (
+        t.closest("[data-cursor='hover']") ||
+        t.closest("a") ||
+        t.closest("button")
+      ) {
+        setMode("hover");
+      } else {
+        setMode("default");
+      }
     };
     window.addEventListener("mousemove", mv);
     window.addEventListener("mouseover", over);
@@ -1794,38 +1828,24 @@ function Cursor() {
     };
   }, [x, y]);
 
-  const size = mode === "project" ? 96 : mode === "hover" ? 56 : 14;
-  const showLabel = mode === "project";
+  const size = mode === "hover" ? 56 : 14;
 
   return (
     <motion.div
       aria-hidden
-      className="fixed top-0 left-0 z-[210] pointer-events-none flex items-center justify-center"
+      className="fixed top-0 left-0 z-[210] pointer-events-none"
       style={{
         x: sx, y: sy,
         translateX: "-50%", translateY: "-50%",
         width: size, height: size,
-        background: mode === "default" ? "transparent" : IVORY,
-        border: mode === "default" ? `1px solid ${IVORY}` : "none",
+        background: mode === "hover" ? IVORY : "transparent",
+        border: mode === "hover" ? "none" : `1px solid ${IVORY}`,
         borderRadius: "50%",
         mixBlendMode: "difference",
-        transition: "width .35s cubic-bezier(.22,1,.36,1), height .35s cubic-bezier(.22,1,.36,1), background .25s ease",
+        transition:
+          "width .35s cubic-bezier(.22,1,.36,1), height .35s cubic-bezier(.22,1,.36,1), background .25s ease",
       }}
-    >
-      {showLabel && (
-        <span
-          style={{
-            fontFamily: "'JetBrains Mono', monospace",
-            fontSize: 10,
-            letterSpacing: "0.2em",
-            textTransform: "uppercase",
-            color: INK,
-          }}
-        >
-          VIEW
-        </span>
-      )}
-    </motion.div>
+    />
   );
 }
 

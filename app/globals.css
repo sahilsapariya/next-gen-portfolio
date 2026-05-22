@@ -72,6 +72,13 @@ a {
   to   { transform: translateX(0); }
 }
 
+/* ─── Magnetic wrapper for buttons ──────────────────────── */
+.ss-mag-wrap {
+  display: inline-block;
+  transition: transform 0.5s var(--ease);
+  will-change: transform;
+}
+
 /* ─── Buttons ───────────────────────────────────────────── */
 .ss-btn {
   display: inline-flex;
