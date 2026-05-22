@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
+  <!-- Warm dark background, rounded square -->
+  <rect width="64" height="64" rx="12" fill="#0E0E0C"/>
+
+  <!-- Subtle inner edge for definition -->
+  <rect x="1.5" y="1.5" width="61" height="61" rx="10.5"
+    fill="none" stroke="#EAE5DC" stroke-opacity="0.08" stroke-width="0.75"/>
+
+  <!-- Italic serif S — the brand letter -->
+  <text
+    x="14"
+    y="46"
+    font-family="ui-serif, 'Newsreader', Georgia, 'Times New Roman', serif"
+    font-size="44"
+    font-style="italic"
+    font-weight="500"
+    fill="#EAE5DC"
+    text-rendering="geometricPrecision"
+  >S</text>
+
+  <!-- Accent period — sits to the right of the S, on the baseline -->
+  <circle cx="50" cy="44" r="4.5" fill="#DE4C1B"/>
+
+  <!-- A faint baseline tick — editorial detail visible at 32px+ -->
+  <line x1="11" y1="54" x2="53" y2="54"
+    stroke="#EAE5DC" stroke-opacity="0.14" stroke-width="0.6" stroke-linecap="round"/>
+</svg>

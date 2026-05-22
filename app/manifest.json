@@ -1,0 +1,23 @@
+{
+  "name": "Sahil Sapariya — Engineer, Product Builder",
+  "short_name": "Sahil Sapariya",
+  "description": "An engineer building systems end to end. Selected work, current focus, and notes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0E0E0C",
+  "theme_color": "#0E0E0C",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-icon.png",
+      "type": "image/png",
+      "sizes": "180x180",
+      "purpose": "any"
+    }
+  ]
+}

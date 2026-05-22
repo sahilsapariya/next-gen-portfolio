@@ -2,18 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ──────────────────────────────────────────────────────────────────────
+   Tokens — the design system.
+   The palette is warm, the rhythm is editorial, the motion is a single
+   ease curve. Everything else extends from here.
+   ────────────────────────────────────────────────────────────────────── */
 :root {
-  --ink: #0A0A0A;
-  --ivory: #F5F1EA;
-  --accent: #FF4A1C;
-  --muted: #7A736B;
-  --hair: rgba(245, 241, 234, 0.14);
-  --hair-strong: rgba(245, 241, 234, 0.22);
-  --hair-soft: rgba(245, 241, 234, 0.08);
+  /* Palette */
+  --bg: #0E0E0C;
+  --fg: #EAE5DC;
+  --accent: #DE4C1B;
+  --live: #4DB874;
+  --muted: #8B847A;
+
+  /* Hairlines (3 weights only) */
+  --hair: rgba(234, 229, 220, 0.14);
+  --hair-strong: rgba(234, 229, 220, 0.22);
+  --hair-soft: rgba(234, 229, 220, 0.08);
+
+  /* Motion */
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-heavy: cubic-bezier(0.76, 0, 0.24, 1);
+  --t-quick: 0.35s;
+  --t-base: 0.7s;
+  --t-slow: 1.2s;
+
+  /* Spacing scale (8-base) */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 16px;
+  --s-4: 24px;
+  --s-5: 32px;
+  --s-6: 48px;
+  --s-7: 64px;
+  --s-8: 96px;
+  --s-9: 128px;
+  --s-10: 192px;
 }
 
+/* ──────────────────────────────────────────────────────────────────────
+   Base
+   ────────────────────────────────────────────────────────────────────── */
 * {
   box-sizing: border-box;
 }
@@ -22,30 +51,40 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: var(--ink);
-  color: var(--ivory);
+  background: var(--bg);
+  color: var(--fg);
   font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
+  font-size: 15px;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  font-feature-settings: "ss01", "ss02", "kern";
+  /* Prevent horizontal scroll caused by overflowing decorations (marquees,
+     wave SVGs, scaled headings) on small viewports. */
+  overflow-x: hidden;
+  /* Better tap response on touch devices. */
+  -webkit-tap-highlight-color: transparent;
+  /* Account for iOS safe areas (notch, home indicator). */
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
 }
 
-/* Font stack aliases — bound to next/font CSS variables */
-.font-serif {
-  font-family: var(--font-fraunces), var(--font-instrument), "Fraunces",
-    "Instrument Serif", serif !important;
-}
-.font-mono {
-  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace !important;
+/* Smooth anchor jumps from the mobile menu. Desktop nav anchor click
+   inherits this too — harmless. */
+html {
+  scroll-behavior: smooth;
 }
 
-body {
-  /* Smooth scroll fallback only fires if our lerp is off */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 ::selection {
   background: var(--accent);
-  color: var(--ink);
+  color: var(--bg);
 }
 
 a {
@@ -53,6 +92,12 @@ a {
   text-decoration: none;
 }
 
+img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+/* Cursor: hide native on desktop only — replaced by our own */
 @media (min-width: 821px) {
   html,
   body,
@@ -62,7 +107,128 @@ a {
   }
 }
 
-/* Marquee */
+/* ──────────────────────────────────────────────────────────────────────
+   Typography utilities (font stacks bound to next/font CSS variables)
+   ────────────────────────────────────────────────────────────────────── */
+.font-serif {
+  font-family: var(--font-serif), Newsreader, Georgia, serif !important;
+  font-feature-settings: "ss01", "kern";
+}
+.font-mono {
+  font-family: var(--font-mono), "JetBrains Mono", ui-monospace, monospace !important;
+}
+.font-script {
+  font-family: var(--font-script), "Caveat Brush", cursive !important;
+}
+.font-sans {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", sans-serif !important;
+  font-feature-settings: "ss01", "ss02";
+}
+
+/* Display sizes — the editorial scale.
+   line-height bumped to ≥ 1.0 to give italic descenders (y, p, g, j)
+   full vertical clearance, and to add visible breathing room between
+   stacked lines of multi-line headlines. */
+.t-display {
+  font-family: var(--font-serif), Newsreader, serif;
+  font-size: clamp(64px, 11vw, 192px);
+  line-height: 1.02;
+  letter-spacing: -0.045em;
+  word-spacing: 0.04em;
+  font-variation-settings: "opsz" 144;
+  font-weight: 300;
+}
+.t-section {
+  font-family: var(--font-serif), Newsreader, serif;
+  font-size: clamp(60px, 10vw, 180px);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  word-spacing: 0.04em;
+  font-variation-settings: "opsz" 144;
+  font-weight: 300;
+}
+.t-block {
+  font-family: var(--font-serif), Newsreader, serif;
+  font-size: clamp(40px, 5vw, 80px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 72;
+  font-weight: 400;
+}
+.t-lead {
+  font-family: var(--font-serif), Newsreader, serif;
+  font-size: clamp(20px, 1.8vw, 28px);
+  line-height: 1.4;
+  letter-spacing: -0.012em;
+  font-variation-settings: "opsz" 36;
+}
+.t-body {
+  font-family: var(--font-serif), Newsreader, serif;
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+  font-variation-settings: "opsz" 18;
+}
+.t-meta {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+.t-meta-tight {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.t-caption {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+
+/* Sans-serif body — for long-form passages where readability beats editorial */
+.t-sans {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  font-weight: 400;
+}
+.t-sans-sm {
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, sans-serif;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: -0.003em;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Visually hidden — for SEO/accessibility content that should be in
+   the document for screen readers and crawlers but not visible.
+   ────────────────────────────────────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Marquee keyframes (one-row text band)
+   ────────────────────────────────────────────────────────────────────── */
 @keyframes ssMarq {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
@@ -72,42 +238,52 @@ a {
   to   { transform: translateX(0); }
 }
 
-/* ─── Magnetic wrapper for buttons ──────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   Cursor blink (terminal section)
+   ────────────────────────────────────────────────────────────────────── */
+@keyframes ssCaret {
+  0%, 49%   { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Buttons (hero CTAs)
+   ────────────────────────────────────────────────────────────────────── */
 .ss-mag-wrap {
   display: inline-block;
   transition: transform 0.5s var(--ease);
   will-change: transform;
 }
 
-/* ─── Buttons ───────────────────────────────────────────── */
 .ss-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 22px;
+  padding: 13px 22px;
+  min-height: 44px; /* iOS/Android touch-target minimum */
   border-radius: 999px;
-  font-family: "JetBrains Mono", monospace;
+  font-family: var(--font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.25em;
   text-transform: uppercase;
   white-space: nowrap;
   text-decoration: none;
-  color: var(--ivory);
-  transition: background 0.4s var(--ease), color 0.4s var(--ease),
-    border-color 0.4s var(--ease), transform 0.4s var(--ease);
+  color: var(--fg);
+  transition: background 0.45s var(--ease), color 0.45s var(--ease),
+    border-color 0.45s var(--ease), transform 0.45s var(--ease);
 }
 .ss-btn-outline {
-  border: 1px solid var(--ivory);
+  border: 1px solid var(--fg);
   background: transparent;
 }
 .ss-btn-outline:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--ink);
+  background: var(--fg);
+  border-color: var(--fg);
+  color: var(--bg);
 }
 .ss-btn-accent {
   background: var(--accent);
-  color: var(--ink);
+  color: var(--bg);
 }
 .ss-btn-accent:hover {
   transform: translateY(-2px);
@@ -117,44 +293,27 @@ a {
   transition: transform 0.45s var(--ease);
 }
 .ss-btn-outline:hover .ss-btn-arrow {
-  transform: rotate(45deg);
-}
-.ss-btn-accent:hover .ss-btn-arrow {
   transform: translateX(4px);
 }
-
-/* ─── Circle arrow CTA (project rows) ───────────────────── */
-.ss-circle-arrow {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  border-radius: 999px;
-  border: 1px solid var(--hair-strong);
-  color: var(--ivory);
-  transition: background 0.45s var(--ease), color 0.45s var(--ease),
-    border-color 0.45s var(--ease), transform 0.45s var(--ease);
-}
-.ss-circle-arrow svg {
-  transition: transform 0.45s var(--ease);
-}
-.ss-circle-arrow:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: var(--ink);
-}
-.ss-circle-arrow:hover svg {
+.ss-btn-accent:hover .ss-btn-arrow {
   transform: rotate(45deg);
 }
 
-/* ─── Tags (stack pills) ────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   Tags (stack pills in Work)
+   ────────────────────────────────────────────────────────────────────── */
 .ss-tag {
-  border: 1px solid rgba(245, 241, 234, 0.22);
+  display: inline-block;
+  border: 1px solid rgba(234, 229, 220, 0.22);
   border-radius: 999px;
-  color: var(--ivory);
+  padding: 5px 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg);
   transition: border-color 0.3s var(--ease), color 0.3s var(--ease),
-    background 0.3s var(--ease), transform 0.3s var(--ease);
+    transform 0.3s var(--ease);
 }
 .ss-tag:hover {
   border-color: var(--accent);
@@ -162,22 +321,41 @@ a {
   transform: translateY(-2px);
 }
 
-/* ─── Spec sheet group row hover ────────────────────────── */
-.ss-group-row {
-  transition: padding-left 0.4s var(--ease);
-}
-.ss-group-row:hover {
-  padding-left: 0.5rem;
-}
-.ss-stack-item {
+/* ──────────────────────────────────────────────────────────────────────
+   Inline links
+   ────────────────────────────────────────────────────────────────────── */
+.ss-link {
+  position: relative;
   display: inline-block;
-  transition: color 0.3s var(--ease);
+  padding-bottom: 4px;
+  text-decoration: none;
 }
-.ss-group-row:hover .ss-stack-item {
-  color: var(--accent);
+.ss-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transform: scaleX(1);
+  transition: transform 0.45s var(--ease);
+}
+.ss-link:hover::after {
+  transform-origin: left;
+  animation: ss-link-draw 0.7s var(--ease) forwards;
+}
+@keyframes ss-link-draw {
+  0% { transform-origin: right; transform: scaleX(1); }
+  49% { transform-origin: right; transform: scaleX(0); }
+  50% { transform-origin: left; transform: scaleX(0); }
+  100% { transform-origin: left; transform: scaleX(1); }
 }
 
-/* ─── Email CTA in Contact ──────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   Email CTA (Contact)
+   ────────────────────────────────────────────────────────────────────── */
 .ss-email-cta {
   position: relative;
   text-decoration: none;
@@ -200,52 +378,17 @@ a {
   background-size: 100% 4px;
 }
 
-/* ─── Back-to-top button ────────────────────────────────── */
-.ss-back-top:hover .ss-back-circle {
-  background: var(--ink);
-  color: var(--ivory);
-  border-color: var(--ink);
-  transform: translateY(-3px);
-}
-
-/* ─── Inline links ──────────────────────────────────────── */
-.ss-link {
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-  padding-bottom: 4px;
-}
-.ss-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  height: 1px;
-  background: currentColor;
-  transform-origin: right;
-  transform: scaleX(1);
-  transition: transform 0.4s var(--ease);
-}
-.ss-link:hover::after {
-  transform-origin: left;
-  animation: ss-link-draw 0.7s var(--ease) forwards;
-}
-@keyframes ss-link-draw {
-  0%   { transform-origin: right;  transform: scaleX(1); }
-  49%  { transform-origin: right;  transform: scaleX(0); }
-  50%  { transform-origin: left;   transform: scaleX(0); }
-  100% { transform-origin: left;   transform: scaleX(1); }
-}
-
-/* ─── Social buttons ────────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   Social buttons (Contact)
+   ────────────────────────────────────────────────────────────────────── */
 .ss-social-btn {
-  transition: color 0.4s var(--ease);
+  transition: color 0.45s var(--ease);
+  text-decoration: none;
 }
 .ss-social-btn .ss-social-fill {
   position: absolute;
   inset: 0;
-  background: var(--ink);
+  background: var(--bg);
   transform: translateY(100%);
   transition: transform 0.55s var(--ease-heavy);
   z-index: 0;
@@ -255,7 +398,7 @@ a {
 }
 .ss-social-btn:hover .ss-social-label,
 .ss-social-btn:hover .ss-social-arrow {
-  color: var(--ivory);
+  color: var(--fg);
 }
 .ss-social-btn .ss-social-arrow svg {
   transform: rotate(-45deg);
@@ -265,29 +408,61 @@ a {
   transform: rotate(0deg);
 }
 
-/* ─── Mobile collapses ──────────────────────────────────── */
+/* ──────────────────────────────────────────────────────────────────────
+   Back-to-top
+   ────────────────────────────────────────────────────────────────────── */
+.ss-back-top:hover .ss-back-circle {
+  background: var(--bg);
+  color: var(--fg);
+  border-color: var(--bg);
+  transform: translateY(-3px);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Lab tile hover
+   ────────────────────────────────────────────────────────────────────── */
+.ss-lab-tile {
+  transition: border-color 0.4s var(--ease), background 0.4s var(--ease);
+  background: rgba(234, 229, 220, 0.01);
+}
+.ss-lab-tile:hover {
+  border-color: var(--accent);
+  background: rgba(255, 91, 42, 0.03);
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Mobile (≤ 820 px)
+   ────────────────────────────────────────────────────────────────────── */
 @media (max-width: 820px) {
-  .ss-nav,
-  .ss-gutter {
-    display: none !important;
+  html,
+  body {
+    cursor: auto;
   }
-  .ss-hero-main,
-  .ss-about-main,
-  .ss-about-meta,
-  .ss-proj-title,
-  .ss-testi-left,
-  .ss-testi-right,
-  .ss-cap-meta,
-  .ss-cap-stack {
-    grid-column: 1 / -1 !important;
+
+  /* Mac-style chrome stays visible but tighter on phone widths */
+  .ss-mac-chrome {
+    padding: 8px 10px !important;
   }
-  .ss-social-grid {
-    grid-template-columns: 1fr !important;
+
+  /* The macOS shadow is intense on desktop; soften it on mobile so the
+     preview doesn't dominate the section */
+  .ss-live-preview {
+    box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.5),
+      0 3px 8px -2px rgba(0, 0, 0, 0.25) !important;
   }
 }
 
-/* ─── Print and other niceties ──────────────────────────── */
-img {
-  user-select: none;
-  -webkit-user-drag: none;
+/* ──────────────────────────────────────────────────────────────────────
+   Small phones (≤ 480 px) — extra-tight padding so dense content fits
+   ────────────────────────────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  /* Tighter side padding so content doesn't feel cramped against edges */
+  .ss-mac-chrome {
+    padding: 7px 9px !important;
+    gap: 8px !important;
+  }
+  /* Buttons can wrap to full width on tiny screens for thumb-friendly hit */
+  .ss-btn {
+    padding: 12px 18px !important;
+  }
 }
