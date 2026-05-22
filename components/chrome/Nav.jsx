@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ACCENT, BG, EASE, EASE_HEAVY, FG } from "@/lib/tokens";
 import { NAV_LINKS } from "@/lib/content";
@@ -32,13 +32,33 @@ export function Nav({ time }) {
     }
   }, [open]);
 
-  /* Close menu on Esc; close + scroll after anchor click. */
+  /* Close menu on Esc. */
   useEffect(() => {
     if (!open) return;
     const onKey = (e) => e.key === "Escape" && setOpen(false);
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
+
+  /* Programmatic anchor navigation — needed because the browser tries
+     to scroll on `<a href="#x">` click BEFORE React commits the
+     setOpen(false) state update and releases the body scroll lock,
+     so the hash changes but the scroll silently fails. Two RAFs let
+     React commit + effect cleanup run, then we scroll manually. */
+  const navigateTo = useCallback((href, id) => {
+    setOpen(false);
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+          if (typeof window !== "undefined" && window.history?.replaceState) {
+            window.history.replaceState(null, "", href);
+          }
+        }
+      });
+    });
+  }, []);
 
   return (
     <>
@@ -186,7 +206,10 @@ export function Nav({ time }) {
                 <motion.a
                   key={l.id}
                   href={l.href}
-                  onClick={() => setOpen(false)}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigateTo(l.href, l.id);
+                  }}
                   initial={{ opacity: 0, y: 14 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.15 + i * 0.06, ease: EASE }}

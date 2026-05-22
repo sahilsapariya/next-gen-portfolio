@@ -132,7 +132,9 @@ img {
    stacked lines of multi-line headlines. */
 .t-display {
   font-family: var(--font-serif), Newsreader, serif;
-  font-size: clamp(64px, 11vw, 192px);
+  /* Min 40px so the longest headline word ("systems") in italic
+     fits on a 320px viewport without clipping or wrapping mid-word. */
+  font-size: clamp(40px, 11vw, 192px);
   line-height: 1.02;
   letter-spacing: -0.045em;
   word-spacing: 0.04em;
