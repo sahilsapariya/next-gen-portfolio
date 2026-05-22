@@ -74,9 +74,12 @@ export function FieldNotes() {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-68%"]);
 
   if (isMobile) {
-    /* Mobile fallback — stack vertically, no horizontal scroll */
+    /* Mobile fallback — stack vertically, no horizontal scroll.
+       id="notes" must also be here so the nav anchor target exists
+       on mobile (it's not just a desktop-only feature). */
     return (
       <section
+        id="notes"
         className="relative px-5 md:px-10 py-32"
         style={{ background: BG, color: FG, borderTop: `1px solid ${HAIR}` }}
       >

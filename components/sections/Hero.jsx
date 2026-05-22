@@ -78,13 +78,17 @@ export function Hero({ reduced, time }) {
               Vadodara, Gujarat, India. Working at Jeavio; alumnus of Dharmsinh
               Desai University.{" "}
             </span>
-            <div className="overflow-hidden">
+            {/* No outer overflow:hidden — per-word clipping inside
+                SplitDisplay handles the rise reveal, AND it lets a long
+                word wrap cleanly to a new line on narrow viewports
+                instead of being clipped at the right edge. */}
+            <div>
               <SplitDisplay text="An engineer" />
             </div>
-            <div className="overflow-hidden">
+            <div>
               <SplitDisplay text="who ships systems" delay={0.12} italic />
             </div>
-            <div className="overflow-hidden">
+            <div>
               <SplitDisplay text="end to end" delay={0.24} />
               <span style={{ color: ACCENT }}>.</span>
             </div>
@@ -165,7 +169,7 @@ export function Hero({ reduced, time }) {
         </div>
         <Hairline />
         <div className="py-8 md:py-10">
-          <MarqueeRow speed={36}>
+          <MarqueeRow speed={80}>
             {Array.from({ length: 10 }).map((_, i) => (
               <span
                 key={i}
