@@ -3,12 +3,16 @@
 import { ArrowUpRight } from "lucide-react";
 import { ACCENT, HAIR, HAIR_STRONG } from "@/lib/tokens";
 
-/* LivePreview — a designed "marketing site" card used in case studies
-   where we can show the public surface but not internal architecture.
-   Renders a faux URL chrome above a serif wordmark and a tagline. */
+/* LivePreview — a designed card for case studies. Two modes:
+   1. Wordmark mode  → faux URL chrome + serif title + italic tagline +
+                       visit CTA. Used when no screenshot is available.
+   2. Image mode     → faux URL chrome + the real screenshot below.
+                       Triggered by setting `preview.image`. */
 export function LivePreview({ preview }) {
   if (!preview) return null;
   const display = preview.url.replace(/^https?:\/\//, "").replace(/\/$/, "");
+  const hasImage = !!preview.image;
+
   return (
     <a
       href={preview.url}
@@ -19,11 +23,12 @@ export function LivePreview({ preview }) {
       style={{
         border: `1px solid ${HAIR_STRONG}`,
         borderRadius: 2,
-        background:
-          "linear-gradient(135deg, rgba(255,91,42,0.05), rgba(234,229,220,0.015) 55%)",
+        background: hasImage
+          ? "rgba(14,14,12,0.6)"
+          : "linear-gradient(135deg, rgba(255,91,42,0.05), rgba(234,229,220,0.015) 55%)",
       }}
     >
-      {/* Faux URL chrome */}
+      {/* Faux URL chrome — consistent across modes */}
       <div
         className="flex items-center gap-3 px-4 py-3"
         style={{ borderBottom: `1px solid ${HAIR}` }}
@@ -55,40 +60,77 @@ export function LivePreview({ preview }) {
         <ArrowUpRight size={12} style={{ opacity: 0.55 }} />
       </div>
 
-      {/* Body */}
-      <div className="p-7 md:p-9 flex flex-col">
-        <div className="t-caption" style={{ color: ACCENT }}>
-          {preview.label || "LIVE MARKETING SITE"}
+      {hasImage ? (
+        /* Image mode — screenshot stretched into a fixed aspect frame */
+        <div className="relative" style={{ aspectRatio: "16 / 10" }}>
+          <img
+            src={preview.image}
+            alt={preview.title || ""}
+            loading="lazy"
+            style={{
+              position: "absolute",
+              inset: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              objectPosition: "top",
+              display: "block",
+            }}
+          />
+          {/* CTA strip overlaid at the bottom */}
+          <div
+            className="absolute bottom-0 left-0 right-0 px-4 py-3 flex items-center justify-between t-caption"
+            style={{
+              background:
+                "linear-gradient(to top, rgba(14,14,12,0.85), rgba(14,14,12,0))",
+              color: "#EAE5DC",
+            }}
+          >
+            <span style={{ color: ACCENT }}>
+              {preview.label || "LIVE MARKETING SITE"}
+            </span>
+            <span className="inline-flex items-center gap-2">
+              VISIT SITE
+              <ArrowUpRight size={11} />
+            </span>
+          </div>
         </div>
-        <h4
-          className="mt-4 font-serif"
-          style={{
-            fontSize: "clamp(32px, 3.4vw, 52px)",
-            lineHeight: 1.05,
-            letterSpacing: "-0.03em",
-            fontVariationSettings: "'opsz' 144",
-            fontWeight: 400,
-          }}
-        >
-          {preview.title}
-        </h4>
-        <p
-          className="mt-3 font-serif italic"
-          style={{
-            fontSize: "clamp(15px, 1.2vw, 18px)",
-            lineHeight: 1.5,
-            letterSpacing: "-0.005em",
-            fontVariationSettings: "'opsz' 36",
-            opacity: 0.78,
-          }}
-        >
-          {preview.tagline}
-        </p>
-        <div className="mt-7 t-caption flex items-center gap-2">
-          <span>VISIT SITE</span>
-          <ArrowUpRight size={11} />
+      ) : (
+        /* Wordmark mode — designed editorial card */
+        <div className="p-7 md:p-9 flex flex-col">
+          <div className="t-caption" style={{ color: ACCENT }}>
+            {preview.label || "LIVE MARKETING SITE"}
+          </div>
+          <h4
+            className="mt-4 font-serif"
+            style={{
+              fontSize: "clamp(32px, 3.4vw, 52px)",
+              lineHeight: 1.05,
+              letterSpacing: "-0.03em",
+              fontVariationSettings: "'opsz' 144",
+              fontWeight: 400,
+            }}
+          >
+            {preview.title}
+          </h4>
+          <p
+            className="mt-3 font-serif italic"
+            style={{
+              fontSize: "clamp(15px, 1.2vw, 18px)",
+              lineHeight: 1.5,
+              letterSpacing: "-0.005em",
+              fontVariationSettings: "'opsz' 36",
+              opacity: 0.78,
+            }}
+          >
+            {preview.tagline}
+          </p>
+          <div className="mt-7 t-caption flex items-center gap-2">
+            <span>VISIT SITE</span>
+            <ArrowUpRight size={11} />
+          </div>
         </div>
-      </div>
+      )}
     </a>
   );
 }

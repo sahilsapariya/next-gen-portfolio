@@ -275,7 +275,7 @@ export function Contact({ time }) {
         </div>
         <div className="col-span-12 md:col-span-4 flex md:justify-center opacity-65">
           <span className="tabular-nums">{time}</span>
-          <span className="opacity-60 ml-2">IST · AHMEDABAD</span>
+          <span className="opacity-60 ml-2">IST · VADODARA</span>
         </div>
         <div className="col-span-12 md:col-span-3 flex md:justify-end">
           <button

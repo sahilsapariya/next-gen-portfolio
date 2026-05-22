@@ -77,10 +77,10 @@ export function Hero({ reduced, time }) {
           </motion.h1>
 
           <Reveal delay={0.7} y={20}>
-            <div className="mt-10 max-w-md t-meta-tight" style={{ color: MUTED }}>
-              Currently @ Jeavio
+            <div className="mt-10 max-w-lg t-meta-tight" style={{ color: MUTED }}>
+              Software Engineer @ Jeavio
               <span className="opacity-50 mx-2">·</span>
-              Ahmedabad, IN
+              Vadodara, IN
               <span className="opacity-50 mx-2">·</span>
               <span className="tabular-nums">{time}</span> IST
             </div>
@@ -122,7 +122,7 @@ export function Hero({ reduced, time }) {
       {/* Bottom band */}
       <div className="relative z-10">
         <div className="px-5 md:px-10 pb-3 flex items-center justify-between t-caption">
-          <span>BASED IN AHMEDABAD · IN</span>
+          <span>BASED IN VADODARA · IN</span>
           <span className="hidden md:flex items-center gap-2">
             SCROLL
             <motion.span

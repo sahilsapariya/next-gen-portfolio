@@ -42,7 +42,7 @@ export const metadata = {
     "An engineer building systems end to end. Selected work, current focus, and notes.",
   openGraph: {
     title: "Sahil Sapariya — Engineer, Product Builder",
-    description: "Backend-first engineer based in Ahmedabad.",
+    description: "Backend-first engineer based in Vadodara.",
   },
 };
 
