@@ -65,7 +65,10 @@ export function LivePreview({ preview }) {
         <div className="relative" style={{ aspectRatio: "16 / 10" }}>
           <img
             src={preview.image}
-            alt={preview.title || ""}
+            alt={
+              preview.alt ||
+              `${preview.title || "Project"} — live marketing site preview`
+            }
             loading="lazy"
             style={{
               position: "absolute",

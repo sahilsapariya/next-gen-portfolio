@@ -49,7 +49,7 @@ export function Hero({ reduced, time }) {
                 animate={reduced ? {} : { opacity: [1, 0.45, 1] }}
                 transition={{ duration: 2.4, repeat: Infinity, ease: "easeInOut" }}
               />
-              <span style={{ color: ACCENT }}>01</span>
+              <span style={{ color: ACCENT }}>SAHIL SAPARIYA</span>
               <span className="opacity-50">—</span>
               <span>ENGINEER · PRODUCT BUILDER · SYSTEMS THINKER</span>
             </div>
@@ -64,6 +64,13 @@ export function Hero({ reduced, time }) {
               transformOrigin: "left top",
             }}
           >
+            {/* Screen-reader / crawler-visible name + role.
+                Visually hidden so the display design stays untouched. */}
+            <span className="sr-only">
+              Sahil Sapariya — Software Engineer and Product Builder, based in
+              Vadodara, Gujarat, India. Working at Jeavio; alumnus of Dharmsinh
+              Desai University.{" "}
+            </span>
             <div className="overflow-hidden">
               <SplitDisplay text="An engineer" />
             </div>
@@ -75,6 +82,21 @@ export function Hero({ reduced, time }) {
               <span style={{ color: ACCENT }}>.</span>
             </div>
           </motion.h1>
+
+          {/* Hidden bio paragraph — keyword-rich natural prose that
+              search engines can use to construct snippets. Not visible
+              to sighted users; the visible design carries the same
+              meaning at a higher level. */}
+          <p className="sr-only">
+            Sahil Sapariya is a full-stack software engineer at Jeavio, based
+            in Vadodara, Gujarat, India. He builds production SaaS systems end
+            to end — frontend architecture, backend workflows, deployment. He
+            is an alumnus of Dharmsinh Desai University (DDU). Selected work
+            includes Nexchool (a school management SaaS), Retail-OS (a retail
+            platform), and the DUHACKS 2.0 award-winning College360. Sahil
+            works with Next.js, TypeScript, Python, Django, FastAPI,
+            PostgreSQL, and React.
+          </p>
 
           <Reveal delay={0.7} y={20}>
             <div className="mt-10 max-w-lg t-meta-tight" style={{ color: MUTED }}>
