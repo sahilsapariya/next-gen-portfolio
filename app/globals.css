@@ -60,9 +60,6 @@ body {
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
   font-feature-settings: "ss01", "ss02", "kern";
-  /* Prevent horizontal scroll caused by overflowing decorations (marquees,
-     wave SVGs, scaled headings) on small viewports. */
-  overflow-x: hidden;
   /* Better tap response on touch devices. */
   -webkit-tap-highlight-color: transparent;
   /* Account for iOS safe areas (notch, home indicator). */
@@ -74,6 +71,13 @@ body {
    inherits this too — harmless. */
 html {
   scroll-behavior: smooth;
+  /* Clip horizontal overflow at the viewport level — marquees, wave SVGs,
+     and scaled headings can extend beyond the viewport on small screens.
+     Applied to html (not body) so body never becomes a CSS scroll container;
+     body as scroll container silently breaks position:sticky in Safari and
+     some Chrome builds. overflow-x on html is inherited by the viewport
+     directly and does NOT create a BFC/scroll-context on body. */
+  overflow-x: hidden;
 }
 
 @media (prefers-reduced-motion: reduce) {
