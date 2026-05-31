@@ -1,9 +1,24 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { ACCENT, BG, EASE, FG, HAIR, HAIR_STRONG } from "@/lib/tokens";
 import { Reveal, SectionLabel, VRot } from "@/components/primitives";
+
+/* Returns true when the viewport is ≤ 1024 px (mobile + tablet).
+   Starts false (desktop) so SSR and the first paint are consistent
+   with the desktop breakpoint; the effect corrects it instantly. */
+function useIsCompact() {
+  const [compact, setCompact] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1024px)");
+    const fn = () => setCompact(mq.matches);
+    fn();
+    mq.addEventListener("change", fn);
+    return () => mq.removeEventListener("change", fn);
+  }, []);
+  return compact;
+}
 
 /* ──────────────────────────────────────────────────────────────────────
    The Path — one continuous serpentine flow showing how a feature moves
@@ -43,6 +58,109 @@ const LOOP_PATH =
   "L 100 290 " +
   "C 20 290, 20 220, 70 160";
 
+/* Renders the existing horizontal serpentine — desktop only (> 1024 px). */
+function HorizontalWave({ inView }) {
+  return (
+    <svg
+      viewBox="0 0 1240 360"
+      width="100%"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block" }}
+    >
+      {/* Iterate loop — drawn first, behind everything */}
+      <motion.path
+        d={LOOP_PATH}
+        fill="none"
+        stroke={HAIR}
+        strokeWidth="0.8"
+        strokeDasharray="3 5"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 1 } : {}}
+        transition={{ duration: 1.6, ease: EASE, delay: 1.4 }}
+      />
+
+      {/* The main wave */}
+      <motion.path
+        d={PATH}
+        fill="none"
+        stroke={HAIR_STRONG}
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={inView ? { pathLength: 1 } : {}}
+        transition={{ duration: 2.4, ease: EASE }}
+      />
+
+      {/* "iterate" label on the loop */}
+      <motion.text
+        x={625}
+        y={308}
+        textAnchor="middle"
+        fill={FG}
+        fontSize="12"
+        fontFamily="var(--font-mono), monospace"
+        letterSpacing="0.32em"
+        style={{ textTransform: "uppercase", opacity: 0.5 }}
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 0.5 } : {}}
+        transition={{ duration: 0.6, delay: 2.8 }}
+      >
+        iterate
+      </motion.text>
+
+      {/* Stage nodes + labels */}
+      {STAGES.map((s, i) => {
+        const labelY = s.side === "above" ? s.y - 28 : s.y + 38;
+        const delay = 0.4 + i * 0.18;
+        return (
+          <g key={s.num}>
+            {(i === 0 || i === STAGES.length - 1) && (
+              <motion.circle
+                cx={s.x}
+                cy={s.y}
+                r="11"
+                fill="none"
+                stroke={ACCENT}
+                strokeWidth="1"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={inView ? { opacity: 0.6, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay, ease: EASE }}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            )}
+            <motion.circle
+              cx={s.x}
+              cy={s.y}
+              r="5"
+              fill={i === 0 || i === STAGES.length - 1 ? ACCENT : FG}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay, ease: EASE }}
+              style={{ transformBox: "fill-box", transformOrigin: "center" }}
+            />
+            <motion.text
+              x={s.x}
+              y={labelY}
+              textAnchor="middle"
+              fill={FG}
+              fontSize="13"
+              fontFamily="var(--font-mono), monospace"
+              letterSpacing="0.22em"
+              style={{ textTransform: "uppercase" }}
+              initial={{ opacity: 0, y: s.side === "above" ? -4 : 4 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: delay + 0.15, ease: EASE }}
+            >
+              {s.num} / {s.label}
+            </motion.text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
 function FlowDiagram() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.25 });
@@ -56,105 +174,7 @@ function FlowDiagram() {
           "linear-gradient(180deg, rgba(234,229,220,0.012), rgba(14,14,12,0))",
       }}
     >
-      <svg
-        viewBox="0 0 1240 360"
-        width="100%"
-        preserveAspectRatio="xMidYMid meet"
-        style={{ display: "block" }}
-      >
-        {/* Iterate loop — drawn first, behind everything */}
-        <motion.path
-          d={LOOP_PATH}
-          fill="none"
-          stroke={HAIR}
-          strokeWidth="0.8"
-          strokeDasharray="3 5"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={inView ? { pathLength: 1, opacity: 1 } : {}}
-          transition={{ duration: 1.6, ease: EASE, delay: 1.4 }}
-        />
-
-        {/* The main wave */}
-        <motion.path
-          d={PATH}
-          fill="none"
-          stroke={HAIR_STRONG}
-          strokeWidth="1.4"
-          strokeLinecap="round"
-          initial={{ pathLength: 0 }}
-          animate={inView ? { pathLength: 1 } : {}}
-          transition={{ duration: 2.4, ease: EASE }}
-        />
-
-        {/* "iterate" label on the loop */}
-        <motion.text
-          x={625}
-          y={308}
-          textAnchor="middle"
-          fill={FG}
-          fontSize="12"
-          fontFamily="var(--font-mono), monospace"
-          letterSpacing="0.32em"
-          style={{ textTransform: "uppercase", opacity: 0.5 }}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 0.5 } : {}}
-          transition={{ duration: 0.6, delay: 2.8 }}
-        >
-          iterate
-        </motion.text>
-
-        {/* Stage nodes + labels */}
-        {STAGES.map((s, i) => {
-          const labelY = s.side === "above" ? s.y - 28 : s.y + 38;
-          const subY = s.side === "above" ? s.y - 14 : s.y + 52;
-          const delay = 0.4 + i * 0.18;
-          return (
-            <g key={s.num}>
-              {/* outer accent ring on first + last */}
-              {(i === 0 || i === STAGES.length - 1) && (
-                <motion.circle
-                  cx={s.x}
-                  cy={s.y}
-                  r="11"
-                  fill="none"
-                  stroke={ACCENT}
-                  strokeWidth="1"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={inView ? { opacity: 0.6, scale: 1 } : {}}
-                  transition={{ duration: 0.6, delay, ease: EASE }}
-                  style={{ transformBox: "fill-box", transformOrigin: "center" }}
-                />
-              )}
-              <motion.circle
-                cx={s.x}
-                cy={s.y}
-                r="5"
-                fill={i === 0 || i === STAGES.length - 1 ? ACCENT : FG}
-                initial={{ opacity: 0, scale: 0 }}
-                animate={inView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay, ease: EASE }}
-                style={{ transformBox: "fill-box", transformOrigin: "center" }}
-              />
-              <motion.text
-                x={s.x}
-                y={labelY}
-                textAnchor="middle"
-                fill={FG}
-                fontSize="13"
-                fontFamily="var(--font-mono), monospace"
-                letterSpacing="0.22em"
-                style={{ textTransform: "uppercase" }}
-                initial={{ opacity: 0, y: s.side === "above" ? -4 : 4 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: delay + 0.15, ease: EASE }}
-              >
-                {s.num} / {s.label}
-              </motion.text>
-            </g>
-          );
-        })}
-      </svg>
+      <HorizontalWave inView={inView} />
     </div>
   );
 }
