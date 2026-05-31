@@ -124,113 +124,111 @@ export function FieldNotes() {
 
   return (
     <section
-      ref={ref}
       id="notes"
       className="relative"
       style={{
         background: BG,
         color: FG,
-        height: "420vh",
         borderTop: `1px solid ${HAIR}`,
       }}
     >
-      <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
-        {/* Header band */}
-        <div className="px-5 md:px-10 pt-12 pb-4">
-          <SectionLabel
-            index="05"
-            title="Field Notes"
-            count="5 NOTES — SCROLL HORIZONTALLY"
-          />
-          <Reveal delay={0.05}>
-            <h2
-              className="mt-6 font-serif"
-              style={{
-                fontSize: "clamp(28px, 3.2vw, 54px)",
-                lineHeight: 1.05,
-                letterSpacing: "-0.04em",
-                fontVariationSettings: "'opsz' 72",
-                fontWeight: 300,
-              }}
+      {/* Entry block — full t-section heading scrolls in normally */}
+      <div className="px-5 md:px-10 pt-24 md:pt-28 pb-10">
+        <SectionLabel
+          index="05"
+          title="Field Notes"
+          count="5 NOTES — SCROLL HORIZONTALLY"
+        />
+        <Reveal delay={0.05}>
+          <h2 className="mt-8 t-section">
+            <span className="block overflow-hidden">Notes from</span>
+            <span
+              className="block overflow-hidden italic"
+              style={{ fontWeight: 400 }}
             >
-              <span className="block overflow-hidden">Notes from</span>
+              production
               <span
-                className="block overflow-hidden italic"
-                style={{ fontWeight: 400 }}
-              >
-                production
-                <span
-                  style={{
-                    color: ACCENT,
-                    fontStyle: "normal",
-                    display: "inline-block",
-                    marginLeft: "0.02em",
-                  }}
-                >
-                  .
-                </span>
-              </span>
-            </h2>
-          </Reveal>
-        </div>
-
-        {/* Horizontal scroll track */}
-        <div className="relative flex-grow flex items-center px-5 md:px-10">
-          <motion.div
-            style={{ x }}
-            className="flex gap-8 will-change-transform"
-          >
-            {/* Lead-in copy as first "card" so the section opens with a thought */}
-            <div
-              className="shrink-0 flex flex-col justify-end pb-12"
-              style={{ width: "min(420px, 80vw)" }}
-            >
-              <p className="t-lead italic opacity-80">
-                Real engineering moments, abstracted to protect client and
-                internal details.
-              </p>
-              <p className="mt-4 t-caption opacity-50">
-                ← SCROLL ↓ TO ADVANCE →
-              </p>
-            </div>
-            {NOTES.map((n) => (
-              <div
-                key={n.n}
-                className="shrink-0"
-                style={{ width: "min(520px, 86vw)" }}
-              >
-                <FieldNoteCard note={n} />
-              </div>
-            ))}
-            {/* Trailing closer */}
-            <div
-              className="shrink-0 flex flex-col justify-center"
-              style={{ width: "min(360px, 78vw)" }}
-            >
-              <div className="t-caption opacity-50">END OF NOTES</div>
-              <p
-                className="mt-3 font-serif italic"
-                style={{ fontSize: 22, lineHeight: 1.4 }}
-              >
-                More live in commit messages.
-              </p>
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Progress rail */}
-        <div className="px-5 md:px-10 pb-8">
-          <div className="flex items-center gap-3 t-caption">
-            <span className="opacity-55">PROGRESS</span>
-            <div className="flex-grow h-px relative" style={{ background: HAIR }}>
-              <motion.div
-                className="absolute inset-0"
                 style={{
-                  background: ACCENT,
-                  transformOrigin: "0 50%",
-                  scaleX: scrollYProgress,
+                  color: ACCENT,
+                  fontStyle: "normal",
+                  display: "inline-block",
+                  marginLeft: "0.02em",
                 }}
-              />
+              >
+                .
+              </span>
+            </span>
+          </h2>
+        </Reveal>
+      </div>
+
+      {/* Sticky scroll area — ref here drives horizontal card translation */}
+      <div ref={ref} style={{ height: "400vh" }}>
+        <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
+          {/* Compact in-session label */}
+          <div className="px-5 md:px-10 pt-8 pb-3 flex items-center justify-between t-caption">
+            <span className="opacity-50">FIELD NOTES — 05</span>
+            <span className="opacity-40">5 NOTES — SCROLL ↓ TO ADVANCE</span>
+          </div>
+
+          {/* Horizontal scroll track */}
+          <div className="relative flex-grow flex items-center px-5 md:px-10">
+            <motion.div
+              style={{ x }}
+              className="flex gap-8 will-change-transform"
+            >
+              {/* Lead-in copy as first "card" so the section opens with a thought */}
+              <div
+                className="shrink-0 flex flex-col justify-end pb-12"
+                style={{ width: "min(420px, 80vw)" }}
+              >
+                <p className="t-lead italic opacity-80">
+                  Real engineering moments, abstracted to protect client and
+                  internal details.
+                </p>
+                <p className="mt-4 t-caption opacity-50">
+                  ← SCROLL ↓ TO ADVANCE →
+                </p>
+              </div>
+              {NOTES.map((n) => (
+                <div
+                  key={n.n}
+                  className="shrink-0"
+                  style={{ width: "min(520px, 86vw)" }}
+                >
+                  <FieldNoteCard note={n} />
+                </div>
+              ))}
+              {/* Trailing closer */}
+              <div
+                className="shrink-0 flex flex-col justify-center"
+                style={{ width: "min(360px, 78vw)" }}
+              >
+                <div className="t-caption opacity-50">END OF NOTES</div>
+                <p
+                  className="mt-3 font-serif italic"
+                  style={{ fontSize: 22, lineHeight: 1.4 }}
+                >
+                  More live in commit messages.
+                </p>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Progress rail */}
+          <div className="px-5 md:px-10 pb-8">
+            <div className="flex items-center gap-3 t-caption">
+              <span className="opacity-55">PROGRESS</span>
+              <div className="flex-grow h-px relative" style={{ background: HAIR }}>
+                <motion.div
+                  className="absolute inset-0"
+                  style={{
+                    background: ACCENT,
+                    transformOrigin: "0 50%",
+                    scaleX: scrollYProgress,
+                  }}
+                />
+              </div>
             </div>
           </div>
         </div>
