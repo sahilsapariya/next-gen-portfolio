@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ACCENT, BG, FG, HAIR, HAIR_STRONG } from "@/lib/tokens";
 import { NOTES } from "@/lib/content";
-import { useIsMobile } from "@/hooks";
+import { useIsCompact } from "@/hooks";
 import { Reveal, SectionLabel } from "@/components/primitives";
 
 /* FieldNoteCard — one production story tile. */
@@ -64,7 +64,7 @@ function FieldNoteCard({ note }) {
 
 export function FieldNotes() {
   const ref = useRef(null);
-  const isMobile = useIsMobile();
+  const isCompact = useIsCompact();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -73,7 +73,7 @@ export function FieldNotes() {
      -68% chosen so the last card's right edge lines up with viewport right. */
   const x = useTransform(scrollYProgress, [0, 1], ["0%", "-68%"]);
 
-  if (isMobile) {
+  if (isCompact) {
     /* Mobile fallback — stack vertically, no horizontal scroll.
        id="notes" must also be here so the nav anchor target exists
        on mobile (it's not just a desktop-only feature). */
@@ -136,14 +136,23 @@ export function FieldNotes() {
     >
       <div className="sticky top-0 h-screen flex flex-col overflow-hidden">
         {/* Header band */}
-        <div className="px-5 md:px-10 pt-24 md:pt-28 pb-6">
+        <div className="px-5 md:px-10 pt-12 pb-4">
           <SectionLabel
             index="05"
             title="Field Notes"
             count="5 NOTES — SCROLL HORIZONTALLY"
           />
           <Reveal delay={0.05}>
-            <h2 className="mt-8 t-section">
+            <h2
+              className="mt-6 font-serif"
+              style={{
+                fontSize: "clamp(28px, 3.2vw, 54px)",
+                lineHeight: 1.05,
+                letterSpacing: "-0.04em",
+                fontVariationSettings: "'opsz' 72",
+                fontWeight: 300,
+              }}
+            >
               <span className="block overflow-hidden">Notes from</span>
               <span
                 className="block overflow-hidden italic"
