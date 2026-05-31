@@ -34,7 +34,7 @@ function JourneyEntry({ entry }) {
     <motion.div
       ref={ref}
       style={{ opacity }}
-      className="grid grid-cols-12 gap-4 md:gap-8 py-10 md:py-14 items-baseline"
+      className="grid grid-cols-12 gap-4 md:gap-8 py-10 md:py-14 items-center"
     >
       <motion.div
         className="col-span-12 md:col-span-3 font-serif tabular-nums"
