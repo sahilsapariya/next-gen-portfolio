@@ -73,20 +73,19 @@ const V_PATH =
 const V_LOOP_PATH =
   "M 90 512 " +
   "C 125 548, 172 548, 172 272 " +
-  "C 172 -4, 125 -4, 90 30";
+  "C 172 5, 125 5, 90 30";
 
 /* Per-stage positions in the vertical viewBox (280 × 580).
-   side: "right" → label text-anchor start at x = cx + 12
-         "left"  → label text-anchor end   at x = cx - 12
-         "centre" → label text-anchor start at x = cx + 12   */
+   All labels render to the right of the dot (textAnchor start, x = cx + 12).
+   Left-peak nodes (cx=32) point right into the open centre space. */
 const V_STAGES = [
-  { cx: 90,  cy: 30,  side: "centre", isAccent: true  }, // 01 Brief
-  { cx: 148, cy: 112, side: "right",  isAccent: false }, // 02 Schema
-  { cx: 32,  cy: 192, side: "left",   isAccent: false }, // 03 Contracts
-  { cx: 90,  cy: 272, side: "centre", isAccent: false }, // 04 Implementation
-  { cx: 148, cy: 352, side: "right",  isAccent: false }, // 05 Preview
-  { cx: 32,  cy: 432, side: "left",   isAccent: false }, // 06 Review
-  { cx: 90,  cy: 512, side: "centre", isAccent: true  }, // 07 Ship
+  { cx: 90,  cy: 30,  side: "right", isAccent: true  }, // 01 Brief
+  { cx: 148, cy: 112, side: "right", isAccent: false }, // 02 Schema
+  { cx: 32,  cy: 192, side: "right", isAccent: false }, // 03 Contracts
+  { cx: 90,  cy: 272, side: "right", isAccent: false }, // 04 Implementation
+  { cx: 148, cy: 352, side: "right", isAccent: false }, // 05 Preview
+  { cx: 32,  cy: 432, side: "right", isAccent: false }, // 06 Review
+  { cx: 90,  cy: 512, side: "right", isAccent: true  }, // 07 Ship
 ];
 
 /* Renders the existing horizontal serpentine — desktop only (> 1024 px). */
@@ -248,10 +247,8 @@ function VerticalWave({ inView }) {
       {V_STAGES.map((vs, i) => {
         const s = STAGES[i];
         const delay = 0.4 + i * 0.18;
-        const labelX =
-          vs.side === "left" ? vs.cx - 12 : vs.cx + 12;
-        const anchor =
-          vs.side === "left" ? "end" : "start";
+        const labelX = vs.cx + 12;
+        const anchor  = "start";
 
         return (
           <g key={s.num}>
