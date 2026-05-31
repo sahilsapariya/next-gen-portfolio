@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ACCENT, BG, FG, HAIR, HAIR_STRONG } from "@/lib/tokens";
 import { PROJECTS } from "@/lib/content";
-import { useIsMobile } from "@/hooks";
+import { useIsCompact } from "@/hooks";
 import {
   Hairline,
   LivePreview,
@@ -18,7 +18,7 @@ import {
    to a flat stacked layout since pinning needs the height to feel right. */
 function ProjectPanel({ project }) {
   const ref = useRef(null);
-  const isMobile = useIsMobile();
+  const isCompact = useIsCompact();
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
@@ -44,7 +44,7 @@ function ProjectPanel({ project }) {
     return unsub;
   }, [stage]);
 
-  if (isMobile) {
+  if (isCompact) {
     return (
       <article className="border-b" style={{ borderColor: HAIR_STRONG }}>
         <div className="grid grid-cols-12 gap-3 py-10 items-baseline">
@@ -143,7 +143,7 @@ function ProjectPanel({ project }) {
         </div>
 
         {/* Morphing content */}
-        <div className="relative flex-grow mt-10">
+        <div className="relative flex-grow mt-10 overflow-hidden">
           {/* Stage 1 — context */}
           <motion.div
             style={{ opacity: oContext }}

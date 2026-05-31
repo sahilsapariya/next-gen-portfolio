@@ -1,4 +1,5 @@
 export { useActiveSection } from "./use-active-section";
+export { useIsCompact } from "./use-is-compact";
 export { useIsMobile } from "./use-is-mobile";
 export { useLiveTime } from "./use-live-time";
 export { useMagnetic } from "./use-magnetic";

@@ -92,7 +92,7 @@ export function Contact({ time }) {
     <section
       id="contact"
       className="relative px-5 md:px-10 pt-32 md:pt-56 pb-10"
-      style={{ background: FG, color: BG }}
+      style={{ background: FG, color: BG, overflowX: "hidden" }}
     >
       <div className="flex items-center justify-between flex-wrap gap-4 t-meta">
         <div className="flex items-center gap-3">
@@ -248,7 +248,7 @@ export function Contact({ time }) {
             target="_blank"
             rel="noreferrer"
             data-cursor="hover"
-            className="ss-social-btn group relative overflow-hidden p-6 md:p-8 flex items-center justify-between"
+            className="ss-social-btn group relative overflow-hidden p-4 md:p-6 lg:p-8 flex items-center justify-between"
             style={{
               background: FG,
               color: BG,
