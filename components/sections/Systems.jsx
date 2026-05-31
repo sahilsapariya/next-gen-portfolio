@@ -323,6 +323,7 @@ function VerticalWave({ inView }) {
 function FlowDiagram() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.25 });
+  const compact = useIsCompact();
   return (
     <div
       ref={ref}
@@ -333,7 +334,7 @@ function FlowDiagram() {
           "linear-gradient(180deg, rgba(234,229,220,0.012), rgba(14,14,12,0))",
       }}
     >
-      <HorizontalWave inView={inView} />
+      {compact ? <VerticalWave inView={inView} /> : <HorizontalWave inView={inView} />}
     </div>
   );
 }
