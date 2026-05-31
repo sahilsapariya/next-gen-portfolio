@@ -215,7 +215,7 @@ export function Nav({ time }) {
                   transition={{ duration: 0.5, delay: 0.15 + i * 0.06, ease: EASE }}
                   className="font-serif flex items-baseline gap-4"
                   style={{
-                    fontSize: "clamp(34px, 10vw, 56px)",
+                    fontSize: "clamp(28px, 10vw, 56px)",
                     lineHeight: 1.05,
                     letterSpacing: "-0.025em",
                     fontVariationSettings: "'opsz' 72",
