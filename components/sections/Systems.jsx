@@ -58,6 +58,37 @@ const LOOP_PATH =
   "L 100 290 " +
   "C 20 290, 20 220, 70 160";
 
+/* Vertical wave path — portrait orientation for mobile/tablet ≤ 1024 px.
+   viewBox "0 0 280 580". Centre axis x=90, right peaks x≈148, left peaks x≈32. */
+const V_PATH =
+  "M 90 30 " +
+  "C 90 65, 148 85, 148 112 " +
+  "C 148 139, 80 162, 32 192 " +
+  "C -16 222, 32 252, 90 272 " +
+  "C 148 292, 148 325, 148 352 " +
+  "C 148 379, 80 405, 32 432 " +
+  "C -16 459, 50 492, 90 512";
+
+/* Dashed iterate-loop arc on the right side of the vertical diagram. */
+const V_LOOP_PATH =
+  "M 90 512 " +
+  "C 125 548, 172 548, 172 272 " +
+  "C 172 -4, 125 -4, 90 30";
+
+/* Per-stage positions in the vertical viewBox (280 × 580).
+   side: "right" → label text-anchor start at x = cx + 12
+         "left"  → label text-anchor end   at x = cx - 12
+         "centre" → label text-anchor start at x = cx + 12   */
+const V_STAGES = [
+  { cx: 90,  cy: 30,  side: "centre", isAccent: true  }, // 01 Brief
+  { cx: 148, cy: 112, side: "right",  isAccent: false }, // 02 Schema
+  { cx: 32,  cy: 192, side: "left",   isAccent: false }, // 03 Contracts
+  { cx: 90,  cy: 272, side: "centre", isAccent: false }, // 04 Implementation
+  { cx: 148, cy: 352, side: "right",  isAccent: false }, // 05 Preview
+  { cx: 32,  cy: 432, side: "left",   isAccent: false }, // 06 Review
+  { cx: 90,  cy: 512, side: "centre", isAccent: true  }, // 07 Ship
+];
+
 /* Renders the existing horizontal serpentine — desktop only (> 1024 px). */
 function HorizontalWave({ inView }) {
   return (
@@ -153,6 +184,137 @@ function HorizontalWave({ inView }) {
               transition={{ duration: 0.6, delay: delay + 0.15, ease: EASE }}
             >
               {s.num} / {s.label}
+            </motion.text>
+          </g>
+        );
+      })}
+    </svg>
+  );
+}
+
+/* Renders the portrait-orientation serpentine — mobile + tablet (≤ 1024 px). */
+function VerticalWave({ inView }) {
+  return (
+    <svg
+      viewBox="0 0 280 580"
+      width="100%"
+      preserveAspectRatio="xMidYMid meet"
+      style={{ display: "block", overflow: "visible" }}
+    >
+      {/* Iterate loop arc — dashed, right side, draws in after main path */}
+      <motion.path
+        d={V_LOOP_PATH}
+        fill="none"
+        stroke={HAIR}
+        strokeWidth="0.8"
+        strokeDasharray="3 5"
+        strokeLinecap="round"
+        initial={{ pathLength: 0, opacity: 0 }}
+        animate={inView ? { pathLength: 1, opacity: 1 } : {}}
+        transition={{ duration: 1.6, ease: EASE, delay: 1.4 }}
+      />
+
+      {/* Main serpentine wave */}
+      <motion.path
+        d={V_PATH}
+        fill="none"
+        stroke={HAIR_STRONG}
+        strokeWidth="1.4"
+        strokeLinecap="round"
+        initial={{ pathLength: 0 }}
+        animate={inView ? { pathLength: 1 } : {}}
+        transition={{ duration: 2.4, ease: EASE }}
+      />
+
+      {/* "iterate" label — rotated 90° along the right-side arc */}
+      <motion.text
+        x={178}
+        y={272}
+        textAnchor="middle"
+        fill={FG}
+        fontSize="8"
+        fontFamily="var(--font-mono), monospace"
+        letterSpacing="0.32em"
+        style={{ textTransform: "uppercase" }}
+        transform="rotate(90, 178, 272)"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 0.3 } : {}}
+        transition={{ duration: 0.6, delay: 2.8 }}
+      >
+        iterate
+      </motion.text>
+
+      {/* Stage nodes + labels */}
+      {V_STAGES.map((vs, i) => {
+        const s = STAGES[i];
+        const delay = 0.4 + i * 0.18;
+        const labelX =
+          vs.side === "left" ? vs.cx - 12 : vs.cx + 12;
+        const anchor =
+          vs.side === "left" ? "end" : "start";
+
+        return (
+          <g key={s.num}>
+            {/* Accent outer ring for Brief (i=0) and Ship (i=6) */}
+            {vs.isAccent && (
+              <motion.circle
+                cx={vs.cx}
+                cy={vs.cy}
+                r="11"
+                fill="none"
+                stroke={ACCENT}
+                strokeWidth="1"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={inView ? { opacity: 0.6, scale: 1 } : {}}
+                transition={{ duration: 0.6, delay, ease: EASE }}
+                style={{ transformBox: "fill-box", transformOrigin: "center" }}
+              />
+            )}
+
+            {/* Main dot */}
+            <motion.circle
+              cx={vs.cx}
+              cy={vs.cy}
+              r="5"
+              fill={vs.isAccent ? ACCENT : FG}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={inView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.5, delay, ease: EASE }}
+              style={{ transformBox: "fill-box", transformOrigin: "center" }}
+            />
+
+            {/* Stage number */}
+            <motion.text
+              x={labelX}
+              y={vs.cy - 4}
+              textAnchor={anchor}
+              fill={vs.isAccent ? ACCENT : FG}
+              fontSize="9"
+              fontFamily="var(--font-mono), monospace"
+              letterSpacing="0.22em"
+              style={{ textTransform: "uppercase" }}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              transition={{ duration: 0.6, delay: delay + 0.15, ease: EASE }}
+            >
+              {s.num}
+            </motion.text>
+
+            {/* Stage label */}
+            <motion.text
+              x={labelX}
+              y={vs.cy + 9}
+              textAnchor={anchor}
+              fill={FG}
+              fontSize="8.5"
+              fontFamily="var(--font-mono), monospace"
+              letterSpacing="0.18em"
+              style={{ textTransform: "uppercase" }}
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 0.7 } : {}}
+              transition={{ duration: 0.6, delay: delay + 0.2, ease: EASE }}
+            >
+              {s.label}
             </motion.text>
           </g>
         );
