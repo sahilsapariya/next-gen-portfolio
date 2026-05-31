@@ -1,24 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { ACCENT, BG, EASE, FG, HAIR, HAIR_STRONG } from "@/lib/tokens";
 import { Reveal, SectionLabel, VRot } from "@/components/primitives";
-
-/* Returns true when the viewport is ≤ 1024 px (mobile + tablet).
-   Starts false (desktop) so SSR and the first paint are consistent
-   with the desktop breakpoint; the effect corrects it instantly. */
-function useIsCompact() {
-  const [compact, setCompact] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 1024px)");
-    const fn = () => setCompact(mq.matches);
-    fn();
-    mq.addEventListener?.("change", fn);
-    return () => mq.removeEventListener?.("change", fn);
-  }, []);
-  return compact;
-}
+import { useIsCompact } from "@/hooks";
 
 /* ──────────────────────────────────────────────────────────────────────
    The Path — one continuous serpentine flow showing how a feature moves
