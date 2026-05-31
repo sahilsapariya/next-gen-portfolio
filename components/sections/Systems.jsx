@@ -14,8 +14,8 @@ function useIsCompact() {
     const mq = window.matchMedia("(max-width: 1024px)");
     const fn = () => setCompact(mq.matches);
     fn();
-    mq.addEventListener("change", fn);
-    return () => mq.removeEventListener("change", fn);
+    mq.addEventListener?.("change", fn);
+    return () => mq.removeEventListener?.("change", fn);
   }, []);
   return compact;
 }
